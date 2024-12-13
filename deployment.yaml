@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Deployment
+metadata:
+  name: chatbot-support
+  labels:
+    app: chatbot-support
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: chatbot-support
+  template:
+    metadata:
+      labels:
+        app: chatbot-support
+    spec:
+      containers:
+      - name: chatbot-support
+        image: ''
+        ports:
+        - containerPort: 3000
+        
