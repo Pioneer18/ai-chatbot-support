@@ -7,6 +7,6 @@ spec:
     app: backend-service
   ports:
     - protocol: TCP
-      port: 3000 # External port for accessing the backend
-      targetPort: 3000 # Internal container port
-  type: ClusterIP # Internal service for backend
+      port: 3000 
+      targetPort: 3000
+  type: ClusterIP

@@ -8,8 +8,8 @@ import { JwtAuthGuard } from './jwt.auth-guard';
 @Module({
   imports: [
     JwtModule.register({
-      secret: process.env.JWT_SECRET, // Ensure to load from env variables
-      signOptions: { expiresIn: '60m' }, // Token expiration time
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '60m' },
     }),
   ],
   providers: [AuthService, JwtStrategy, JwtAuthGuard],
