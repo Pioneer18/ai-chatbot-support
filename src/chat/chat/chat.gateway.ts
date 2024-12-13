@@ -1,5 +1,5 @@
 import { WebSocketGateway, SubscribeMessage, MessageBody } from '@nestjs/websockets';
-import { AiService } from 'src/ai/ai.service';
+import { AiService } from '../../ai/ai.service';
 
 @WebSocketGateway()
 export class ChatGateway {

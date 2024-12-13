@@ -14,4 +14,4 @@ COPY --from=build /app .
 
 RUN npm install --production
 
-CMD ["node", "dist/main"]
+CMD ["node", "dist/main.js"]
