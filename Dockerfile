@@ -10,6 +10,7 @@ RUN npm run build
 FROM node:16-slim
 
 WORKDIR /app
+COPY --from=build/app
 
 RUN npm install --production
 
