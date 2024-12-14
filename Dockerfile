@@ -14,4 +14,6 @@ COPY --from=build /app .
 
 RUN npm install --production
 
+RUN apt-get update && apt-get install -y libc6
+
 CMD ["node", "dist/main.js"]

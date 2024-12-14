@@ -1,12 +1,11 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: chatbot-support
-  namespace: default
+  name: chatbot-support-deployment
   labels:
     app: chatbot-support
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: chatbot-support
@@ -16,14 +15,8 @@ spec:
         app: chatbot-support
     spec:
       containers:
-      - name: chatbot-support
-        image: 'gcr.io/ai-chatbot-support-444616/chatbot-support:v1'
-        env:
-        - name: JWT_SECRET
-          valueFrom:
-            secretKeyRef:
-              name: jwt-secret
-              key: jwt_secret
-
-        ports:
-        - containerPort: 3000
+        - name: chatbot-support
+          image: gcr.io/ai-chatbot-support-444616/chatbot-support:v1
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
