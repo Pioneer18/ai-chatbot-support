@@ -46,6 +46,7 @@ env:
   GKE_ZONE: 'us-central1-c'
   DEPLOYMENT_NAME: 'chatbot-support'
   WORKLOAD_IDENTITY_PROVIDER: 'projects/750880222185/locations/global/workloadIdentityPools/github/providers/my-repo'
+  SERVICE_ACCOUNT: '750880222185-compute@developer.gserviceaccount.com'
 
 jobs:
   setup-build-publish-deploy:
@@ -70,7 +71,7 @@ jobs:
         uses: 'google-github-actions/auth@f112390a2df9932162083945e46d439060d66ec2' # google-github-actions/auth@v2
         with:
           workload_identity_provider: '${{ env.WORKLOAD_IDENTITY_PROVIDER }}'
-          service_account: "${{ env.PROJECT_ID }}@appspot.gserviceaccount.com"
+          service_account: '${{ env.SERVICE_ACCOUNT }}'
 
       # Authenticate Docker to Google Cloud Artifact Registry
       - name: 'Docker Auth'
