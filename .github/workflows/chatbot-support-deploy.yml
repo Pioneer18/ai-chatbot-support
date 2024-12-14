@@ -46,7 +46,7 @@ env:
   GKE_ZONE: 'us-central1-c'
   DEPLOYMENT_NAME: 'chatbot-support'
   WORKLOAD_IDENTITY_PROVIDER: 'projects/750880222185/locations/global/workloadIdentityPools/github/providers/my-repo'
-  SERVICE_ACCOUNT: '750880222185-compute@developer.gserviceaccount.com'
+  SERVICE_ACCOUNT: 'github-actions-sa@ai-chatbot-support-444616.iam.gserviceaccount.com'
 
 jobs:
   setup-build-publish-deploy:
