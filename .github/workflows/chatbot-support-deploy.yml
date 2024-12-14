@@ -45,7 +45,7 @@ env:
   GKE_REGION: 'us-central1'
   GKE_ZONE: 'us-central1-c'
   DEPLOYMENT_NAME: 'chatbot-support'
-  WORKLOAD_IDENTITY_PROVIDER: 'projects/750880222185/locations/global/workloadIdentityPools/github/providers/my-repo'
+  WORKLOAD_IDENTITY_PROVIDER: 'projects/750880222185/locations/global/workloadIdentityPools/github-pool/providers/my-repo'
   SERVICE_ACCOUNT: 'github-actions-sa@ai-chatbot-support-444616.iam.gserviceaccount.com'
 
 jobs:
