@@ -42,11 +42,11 @@ jobs:
 
       # Authenticate Docker to Google Cloud Artifact Registry
       - name: 'Docker Auth'
-        uses: 'docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567' # docker/login-action@v3
+        uses: 'docker/login-action@v3'
         with:
           username: 'oauth2accesstoken'
           password: '${{ steps.auth.outputs.auth_token }}'
-          registry: '${{ env.GAR_LOCATION }}-docker.pkg.dev'
+          registry: 'gcr.io'
 
       # Get the GKE credentials so we can deploy to the cluster
       - name: 'Set up GKE credentials'
