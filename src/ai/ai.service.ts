@@ -3,7 +3,7 @@ import { OpenAI } from "openai";
 
 @Injectable()
 export class AiService {
-  private openai: OpenAI;
+  private openai: OpenAI; 
 
   constructor() {
     const newOpenai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
