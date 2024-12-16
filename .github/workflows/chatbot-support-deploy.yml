@@ -10,7 +10,7 @@ env:
   GAR_LOCATION: 'us-central1'
   GKE_CLUSTER: 'ai-support-chatbot-cluster'
   GKE_REGION: 'us-central1'
-  GKE_ZONE: 'us-central1-c'
+  GKE_ZONE: 'us-central1'
   DEPLOYMENT_NAME: 'chatbot-support' 
   WORKLOAD_IDENTITY_PROVIDER: 'projects/750880222185/locations/global/workloadIdentityPools/ghw-pool/providers/my-repo'
   SERVICE_ACCOUNT: 'github-workflows-sa@ai-chatbot-support-444616.iam.gserviceaccount.com'
