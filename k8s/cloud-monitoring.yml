@@ -1,7 +1,7 @@
 apiVersion: monitoring.googleapis.com/v1
 kind: PodMonitoring
 metadata:
-  name:chatbot-support
+  name: chatbot-support
 spec:
   selector:
     matchLabels:
@@ -9,3 +9,4 @@ spec:
   endpoints:
   - port: metrics
     interval: 30s
+
