@@ -18,6 +18,17 @@ spec:
         - image: gcr.io/ai-chatbot-support-444616/chatbot-support:v1
           imagePullPolicy: Always
           name: chatbot-support
+          env:
+          - name: OPENAI_API_KEY
+            valueFrom:
+              secretKeyRef:
+                name: openai-api-key
+                key: OPENAI_API_KEY
+          - name: JWT_SECRET
+            valueFrom:
+              secretKeyRef:
+                name: jwt-secret
+                key: JWT_SECRET
           readinessProbe:
             periodSeconds: 5
             exec:
