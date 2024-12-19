@@ -28,7 +28,7 @@ spec:
             valueFrom:
               secretKeyRef:
                 name: jwt-secret
-                key: JWT_SECRET
+                key: jwt_secret
           readinessProbe:
             periodSeconds: 5
             exec:
