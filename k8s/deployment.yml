@@ -15,8 +15,14 @@ spec:
         app: chatbot-support
     spec:
       containers:
-        - name: chatbot-support
-          image: gcr.io/ai-chatbot-support-444616/chatbot-support:v1
+        - image: gcr.io/ai-chatbot-support-444616/chatbot-support:v1
           imagePullPolicy: Always
+          name: chatbot-support
+          readinessProbe:
+            periodSeconds: 5
+            exec:
+              command:
+              - cat
+              - /tmp/healthy
           ports:
             - containerPort: 3000
