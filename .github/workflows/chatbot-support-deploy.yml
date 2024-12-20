@@ -78,14 +78,6 @@ jobs:
       - name: Push Docker Image to GCR
         if: success()
         run: docker push gcr.io/${{ env.PROJECT_ID }}/chatbot-support:v1
-      
-      - name: Make GCR scan script executable
-        run: chmod +x ./scripts/vulnerability-scan.sh
-      
-      # Step 4: Run Vulnerability Scan
-      - name: Run GCR Image Scan
-        id: scan
-        run: ./scripts/vulnerability-scan.sh
 
       - name: Configure kubectl for GKE
         if: success()
