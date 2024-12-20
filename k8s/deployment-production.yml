@@ -1,12 +1,13 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: chatbot-support-deployment
+  name: chatbot-support-deployment-production
   labels:
     app: chatbot-support
+    env: production
 spec:
   replicas: 2
-  revisionHistoryLimit: 10
+  revisionHistoryLimit: 0
   selector:
     matchLabels:
       app: chatbot-support
