@@ -87,4 +87,4 @@ jobs:
             
       - name: Apply Kubernetes Manifests
         if: success()
-        run: kubectl apply -f k8s/deployment.yml
+        run: kubectl apply -f k8s/deployment.yml --record
