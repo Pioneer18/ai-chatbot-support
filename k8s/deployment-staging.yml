@@ -31,6 +31,21 @@ spec:
               secretKeyRef:
                 name: jwt-secret
                 key: jwt_secret
+          - name: DB_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_USERNAME
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB_PASSWORD
+          - name: DB
+            valueFrom:
+              secretKeyRef:
+                name: db-credentials
+                key: DB
           readinessProbe:
             periodSeconds: 5
             exec:
@@ -40,18 +55,17 @@ spec:
               - "mkdir -p /tmp && touch /tmp/healthy && cat /tmp/healthy"
           ports:
             - containerPort: 3000
-        - image: gcr.io/cloudsql-docker/gce-proxy:latest
+        - image:  gcr.io/cloud-sql-connectors/cloud-sql-proxy:latest
+          imagePullPolicy: Always
           name: cloud-sql-proxy
           command:
             - "/cloud_sql_proxy"
             - "-dir=/cloudsql"
-            - "-credential_file=/secrets/cloudsql/credentials.json"
+            - "-credential_file=/secrets/cloudsql/cloud-sql-service-account-credentials.json"
           volumeMounts:
-            - name: cloudsql
-              mountPath: /cloudsql
+          - name: secrets-volume
+            mountPath: /secrets/cloudsql
       volumes:
-        - name: cloudsql
-          projected:
-            sources:
-              - secret:
-                  name: cloudsql-credentials
+        - name: secrets-volume
+          secret:
+            secretName: cloudsql-credentials
