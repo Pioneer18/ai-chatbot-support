@@ -40,3 +40,18 @@ spec:
               - "mkdir -p /tmp && touch /tmp/healthy && cat /tmp/healthy"
           ports:
             - containerPort: 3000
+        - image: gcr.io/cloudsql-docker/gce-proxy:latest
+          name: cloud-sql-proxy
+          command:
+            - "/cloud_sql_proxy"
+            - "-dir=/cloudsql"
+            - "-credential_file=/secrets/cloudsql/credentials.json"
+          volumeMounts:
+            - name: cloudsql
+              mountPath: /cloudsql
+      volumes:
+        - name: cloudsql
+          projected:
+            sources:
+              - secret:
+                  name: cloudsql-credentials
