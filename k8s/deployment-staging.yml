@@ -21,56 +21,61 @@ spec:
           imagePullPolicy: Always
           name: chatbot-support
           env:
-          - name: OPENAI_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: openai-api-key
-                key: OPENAI_API_KEY
-          - name: JWT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: jwt-secret
-                key: jwt_secret
-          - name: DB_USERNAME
-            valueFrom:
-              secretKeyRef:
-                name: db-credentials
-                key: DB_USERNAME
-          - name: DB_PASSWORD
-            valueFrom:
-              secretKeyRef:
-                name: db-credentials
-                key: DB_PASSWORD
-          - name: DB
-            valueFrom:
-              secretKeyRef:
-                name: db-credentials
-                key: DB
-          - name: DB_PORT
-            valueFrom:
-              secretKeyRef:
-                name: db-credentials
-                key: DB_PORT
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openai-api-key
+                  key: OPENAI_API_KEY
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt_secret
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_PASSWORD
+            - name: DB
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_PORT
           readinessProbe:
             periodSeconds: 5
             exec:
               command:
-              - sh
-              - -c
-              - "mkdir -p /tmp && touch /tmp/healthy && cat /tmp/healthy"
+                - sh
+                - -c
+                - "mkdir -p /tmp && touch /tmp/healthy && cat /tmp/healthy"
           ports:
             - containerPort: 3000
-        - image:  gcr.io/cloud-sql-connectors/cloud-sql-proxy:latest
+        - image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:latest
           imagePullPolicy: Always
           name: cloud-sql-proxy
-          command:
-            - "/cloud_sql_proxy"
-            - "-dir=/cloudsql"
-            - "-credential_file=/secrets/cloudsql/cloud-sql-service-account-credentials.json"
+          args:
+            - "--port=1234"
+            - "--credentials-file=/secrets/cloudsql/cloud-sql-service-account-credentials.json"
+          securityContext:
+            runAsNonRoot: true
           volumeMounts:
-          - name: secrets-volume
-            mountPath: /secrets/cloudsql
+            - name: cloudsql-credentials
+              mountPath: /secrets/cloudsql/
+              readOnly: true
+          resources:
+            requests:
+              cpu: "1"
       volumes:
-        - name: secrets-volume
+        - name: cloudsql-credentials
           secret:
             secretName: cloudsql-credentials
