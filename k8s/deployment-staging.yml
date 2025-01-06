@@ -60,11 +60,13 @@ spec:
                 - "mkdir -p /tmp && touch /tmp/healthy && cat /tmp/healthy"
           ports:
             - containerPort: 3000
-        - image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:latest
+        - image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.1
           imagePullPolicy: Always
           name: cloud-sql-proxy
           args:
+            - "--structured-logs"
             - "--port=1234"
+            - "ai-chatbot-support-444616:us-central1:ai-chatbot-database"
             - "--credentials-file=/secrets/cloudsql/cloud-sql-service-account-credentials.json"
           securityContext:
             runAsNonRoot: true
