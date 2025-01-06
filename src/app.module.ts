@@ -7,6 +7,8 @@ import { AiService } from './ai/ai.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PatientsModule } from './patients/patients.module';
+import { PhysiciansModule } from './physicians/physicians.module';
 
 @Module({
   imports: [
@@ -21,12 +23,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB,
-      entities: [],
-      synchronize: true,
+      autoLoadEntities: true,
     }),
     ChatModule,
     AuthModule,
-    UsersModule],
+    UsersModule,
+    PatientsModule,
+    PhysiciansModule],
   controllers: [AppController],
   providers: [AppService, AiService],
 })
