@@ -71,13 +71,14 @@ spec:
           securityContext:
             runAsNonRoot: true
           volumeMounts:
-            - name: cloudsql-credentials
+            - name: cloudsql-sa-credentials
               mountPath: /secrets/cloudsql/
               readOnly: true
           resources:
             requests:
-              cpu: "1"
+              memory: "256Mi"
+              cpu: "500m"
       volumes:
-        - name: cloudsql-credentials
+        - name: cloudsql-sa-credentials
           secret:
             secretName: cloudsql-credentials
