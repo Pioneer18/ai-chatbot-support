@@ -21,22 +21,64 @@ spec:
           imagePullPolicy: Always
           name: chatbot-support
           env:
-          - name: OPENAI_API_KEY
-            valueFrom:
-              secretKeyRef:
-                name: openai-api-key
-                key: OPENAI_API_KEY
-          - name: JWT_SECRET
-            valueFrom:
-              secretKeyRef:
-                name: jwt-secret
-                key: jwt_secret
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: openai-api-key
+                  key: OPENAI_API_KEY
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: jwt_secret
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_USERNAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_PASSWORD
+            - name: DB
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: DB_PORT
           readinessProbe:
             periodSeconds: 5
             exec:
               command:
-              - sh
-              - -c
-              - "mkdir -p /tmp && touch /tmp/healthy && cat /tmp/healthy"
+                - sh
+                - -c
+                - "mkdir -p /tmp && touch /tmp/healthy && cat /tmp/healthy"
           ports:
             - containerPort: 3000
+        - image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.1
+          imagePullPolicy: Always
+          name: cloud-sql-proxy
+          args:
+            - "--structured-logs"
+            - "--port=1234"
+            - "ai-chatbot-support-444616:us-central1:ai-chatbot-database"
+            - "--credentials-file=/secrets/cloudsql/cloud-sql-service-account-credentials.json"
+          securityContext:
+            runAsNonRoot: true
+          volumeMounts:
+            - name: cloudsql-sa-credentials
+              mountPath: /secrets/cloudsql/
+              readOnly: true
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+      volumes:
+        - name: cloudsql-sa-credentials
+          secret:
+            secretName: cloudsql-credentials
