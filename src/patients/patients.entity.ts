@@ -9,7 +9,7 @@ export class Patient {
     
     @OneToOne(() => User)
     @JoinColumn()
-    user_id: string
+    user: User
     
     @Column({nullable: true})
     date_of_birth: string

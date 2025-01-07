@@ -9,6 +9,15 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PatientsModule } from './patients/patients.module';
 import { PhysiciansModule } from './physicians/physicians.module';
+import { SymptomsModule } from './symptoms/symptoms.module';
+import { ConditionsModule } from './conditions/conditions.module';
+import { PatientConditionsModule } from './patient-conditions/patient-conditions.module';
+import { PatientSymptomsModule } from './patient-symptoms/patient-symptoms.module';
+import { SymptomConditionMappingModule } from './symptom-condition-mapping/symptom-condition-mapping.module';
+import { PhysicianConditionsModule } from './physician-conditions/physician-conditions.module';
+import { PhysicianSymptomsModule } from './physician-symptoms/physician-symptoms.module';
+import { PatientPhysiciansModule } from './patient-physicians/patient-physicians.module';
+import { AppointmentsModule } from './appointments/appointments.module';
 
 @Module({
   imports: [
@@ -29,7 +38,16 @@ import { PhysiciansModule } from './physicians/physicians.module';
     AuthModule,
     UsersModule,
     PatientsModule,
-    PhysiciansModule],
+    PhysiciansModule,
+    SymptomsModule,
+    ConditionsModule,
+    PatientConditionsModule,
+    PatientSymptomsModule,
+    SymptomConditionMappingModule,
+    PhysicianConditionsModule,
+    PhysicianSymptomsModule,
+    PatientPhysiciansModule,
+    AppointmentsModule],
   controllers: [AppController],
   providers: [AppService, AiService],
 })

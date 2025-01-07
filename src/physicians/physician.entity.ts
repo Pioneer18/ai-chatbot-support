@@ -9,7 +9,7 @@ export class Physician {
 
     @OneToOne(() => User)
     @JoinColumn()
-    user_id: string
+    user: User
 
     @Column()
     specialization: string
