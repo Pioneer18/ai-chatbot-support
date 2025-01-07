@@ -1,5 +1,5 @@
-import { Condition } from '../conditions/condition.entity';
-import { Patient } from '../patients/patients.entity';
+import { Condition } from '../symptom-condition-mapping/condition.entity';
+import { Patient } from './patients.entity';
 import { AuditableEntity } from '../utilities/entities/auditable-entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
 

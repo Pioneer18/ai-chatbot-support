@@ -1,7 +1,7 @@
 import { Patient } from '../patients/patients.entity';
-import { Symptom } from '../symptoms/symptom.entity';
+import { Symptom } from '../symptom-condition-mapping/symptom.entity';
 import { AuditableEntity } from '../utilities/entities/auditable-entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Timestamp} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
 
 @Entity('patient_symptoms')
 export class PatientSymptoms {

@@ -3,6 +3,8 @@ import { PhysiciansService } from './physicians.service';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { Physician } from './physician.entity';
 import { Repository } from 'typeorm';
+import { PhysicianConditions } from './physician-condition.entity';
+import { PhysicianSymptoms } from './physician-symptoms.entity';
 
 describe('PhysiciansService', () => {
   let service: PhysiciansService;
@@ -20,6 +22,14 @@ describe('PhysiciansService', () => {
         PhysiciansService,
         {
           provide: getRepositoryToken(Physician),
+          useValue: mockRepository,
+        },
+        {
+          provide: getRepositoryToken(PhysicianConditions),
+          useValue: mockRepository,
+        },
+        {
+          provide: getRepositoryToken(PhysicianSymptoms),
           useValue: mockRepository,
         },
       ],

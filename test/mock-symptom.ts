@@ -1,4 +1,4 @@
-import { Symptom } from "src/symptoms/symptom.entity";
+import { Symptom } from "src/symptom-condition-mapping/symptom.entity";
 
 export const MockSymptom: Symptom = {
     id: 9,
