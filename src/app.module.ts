@@ -18,6 +18,8 @@ import { PhysicianConditionsModule } from './physician-conditions/physician-cond
 import { PhysicianSymptomsModule } from './physician-symptoms/physician-symptoms.module';
 import { PatientPhysiciansModule } from './patient-physicians/patient-physicians.module';
 import { AppointmentsModule } from './appointments/appointments.module';
+import { MedicationModule } from './medication/medication.module';
+import { PrescriptionModule } from './prescription/prescription.module';
 
 @Module({
   imports: [
@@ -47,7 +49,9 @@ import { AppointmentsModule } from './appointments/appointments.module';
     PhysicianConditionsModule,
     PhysicianSymptomsModule,
     PatientPhysiciansModule,
-    AppointmentsModule],
+    AppointmentsModule,
+    MedicationModule,
+    PrescriptionModule],
   controllers: [AppController],
   providers: [AppService, AiService],
 })
