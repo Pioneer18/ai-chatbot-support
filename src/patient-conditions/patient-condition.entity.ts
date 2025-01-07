@@ -1,6 +1,6 @@
-import { Condition } from 'src/conditions/condition.entity';
-import { Patient } from 'src/patients/patients.entity';
-import { AuditableEntity } from 'src/utilities/entities/auditable-entity';
+import { Condition } from '../conditions/condition.entity';
+import { Patient } from '../patients/patients.entity';
+import { AuditableEntity } from '../utilities/entities/auditable-entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
 
 @Entity('patient_conditions')

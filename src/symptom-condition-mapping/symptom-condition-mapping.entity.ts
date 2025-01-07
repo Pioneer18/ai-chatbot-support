@@ -1,5 +1,5 @@
-import { Condition } from 'src/conditions/condition.entity';
-import { Symptom } from 'src/symptoms/symptom.entity';
+import { Condition } from '../conditions/condition.entity';
+import { Symptom } from '../symptoms/symptom.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
 
 @Entity('symptom_condition_mapping')

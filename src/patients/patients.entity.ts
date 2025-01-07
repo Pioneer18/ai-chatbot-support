@@ -1,5 +1,5 @@
-import { User } from 'src/users/user.entity';
-import { AuditableEntity } from 'src/utilities/entities/auditable-entity';
+import { User } from '../users/user.entity';
+import { AuditableEntity } from '../utilities/entities/auditable-entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
 
 @Entity('patients')

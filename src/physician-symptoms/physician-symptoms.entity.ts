@@ -1,5 +1,5 @@
-import { Physician } from 'src/physicians/physician.entity';
-import { Symptom } from 'src/symptoms/symptom.entity';
+import { Physician } from '../physicians/physician.entity';
+import { Symptom } from '../symptoms/symptom.entity';
 import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
 
 @Entity('physician_symptoms')

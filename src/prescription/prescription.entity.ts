@@ -1,6 +1,6 @@
-import { Patient } from "src/patients/patients.entity";
-import { Physician } from "src/physicians/physician.entity";
-import { AuditableEntity } from "src/utilities/entities/auditable-entity";
+import { Patient } from "../patients/patients.entity";
+import { Physician } from "../physicians/physician.entity";
+import { AuditableEntity } from "../utilities/entities/auditable-entity";
 import { Entity, JoinColumn, Column, PrimaryGeneratedColumn, OneToOne, Timestamp } from "typeorm";
 
 @Entity('prescriptions')

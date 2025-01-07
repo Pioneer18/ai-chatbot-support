@@ -1,5 +1,5 @@
-import { Condition } from 'src/conditions/condition.entity';
-import { Physician } from 'src/physicians/physician.entity';
+import { Condition } from '../conditions/condition.entity';
+import { Physician } from '../physicians/physician.entity';
 import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
 
 @Entity('physician_conditions')

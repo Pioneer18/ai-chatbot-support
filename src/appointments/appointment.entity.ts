@@ -1,6 +1,6 @@
-import { Patient } from "src/patients/patients.entity";
-import { Physician } from "src/physicians/physician.entity";
-import { AuditableEntity } from "src/utilities/entities/auditable-entity";
+import { Patient } from "../patients/patients.entity";
+import { Physician } from "../physicians/physician.entity";
+import { AuditableEntity } from "../utilities/entities/auditable-entity";
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, Timestamp } from "typeorm";
 
 @Entity('appointments')
@@ -17,7 +17,7 @@ export class Appointment {
     physician: Physician
 
     @Column('timestamp without time zone')
-    scheduled_time: Timestamp
+    scheduled_time: Date
 
     @Column('text')
     status: string
