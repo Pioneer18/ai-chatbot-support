@@ -1,15 +1,15 @@
-import { Condition } from '../conditions/condition.entity';
 import { Physician } from '../physicians/physician.entity';
+import { Symptom } from '../symptom-condition-mapping/symptom.entity';
 import { Entity, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
 
-@Entity('physician_conditions')
-export class PhysicianConditions {
+@Entity('physician_symptoms')
+export class PhysicianSymptoms {
     @PrimaryGeneratedColumn()
     id: number
 
-    @OneToOne(() => Condition)
+    @OneToOne(() => Symptom)
     @JoinColumn()
-    condition: Condition
+    symptom: Symptom
 
     @OneToOne(() => Physician)
     @JoinColumn()
