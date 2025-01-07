@@ -11,13 +11,13 @@ export class Patient {
     @JoinColumn()
     user: User
     
-    @Column('text', {nullable: true})
+    @Column('text')
     date_of_birth: string
     
-    @Column('text', {nullable: true})
+    @Column('text')
     gender: string
     
-    @Column('text', {nullable: true}) // e.g. 5.11 is 5 feet 11 inches
+    @Column('text') // e.g. 5.11 is 5 feet 11 inches
     height: string
 
     @Column('text', {nullable: true})

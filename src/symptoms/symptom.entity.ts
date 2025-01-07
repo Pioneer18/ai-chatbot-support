@@ -8,6 +8,6 @@ export class Symptom {
     @Column('text')
     name: string
 
-    @Column('text')
+    @Column('text', {nullable: true})
     description: string
 }

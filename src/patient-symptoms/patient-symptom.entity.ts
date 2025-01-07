@@ -17,9 +17,6 @@ export class PatientSymptoms {
     patient: Patient
 
     @Column('text')
-    date: Timestamp
-
-    @Column('text')
     notes: string
 
     @Column(() => AuditableEntity)

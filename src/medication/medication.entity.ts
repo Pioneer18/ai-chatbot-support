@@ -11,9 +11,9 @@ export class Medication {
     @Column('text')
     dosage: string
 
-    @Column('text')
+    @Column('text', {nullable: true})
     type: string
 
-    @Column('text')
+    @Column('text', {nullable: true})
     sideEffects: string
 }

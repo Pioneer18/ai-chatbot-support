@@ -19,6 +19,9 @@ export class Prescriptions {
     @Column('text') // should this be fk to medication table?
     medication: string
 
+    @Column('text')
+    dosage: string
+
     @Column('timestamp without time zone')
     start_date: Timestamp
 

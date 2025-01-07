@@ -16,9 +16,6 @@ export class PatientConditions {
     @JoinColumn()
     patient: Patient
 
-    @Column('text') // not need if we have created at?
-    date: string
-
     @Column('text')
     notes: string
 
