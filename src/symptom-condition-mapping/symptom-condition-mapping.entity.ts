@@ -15,9 +15,9 @@ export class SymptomConditionMapping {
     @JoinColumn()
     condition: Condition
 
-    @Column()
+    @Column('text')
     severityLevel: string
 
-    @Column()
+    @Column('text')
     recommended_action: string
 }

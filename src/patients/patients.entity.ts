@@ -11,16 +11,16 @@ export class Patient {
     @JoinColumn()
     user: User
     
-    @Column({nullable: true})
+    @Column('text', {nullable: true})
     date_of_birth: string
     
-    @Column({nullable: true})
+    @Column('text', {nullable: true})
     gender: string
     
-    @Column({nullable: true}) // e.g. 5.11 is 5 feet 11 inches
-    height: number
+    @Column('text', {nullable: true}) // e.g. 5.11 is 5 feet 11 inches
+    height: string
 
-    @Column({nullable: true})
+    @Column('text', {nullable: true})
     insurance_id: string
     
     @Column(() => AuditableEntity)

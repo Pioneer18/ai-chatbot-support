@@ -11,10 +11,10 @@ export class Physician {
     @JoinColumn()
     user: User
 
-    @Column()
+    @Column('text')
     specialization: string
 
-    @Column({nullable: true})
+    @Column('text', {nullable: true})
     location: string
 
     @Column("simple-array", {nullable: true})

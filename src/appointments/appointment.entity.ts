@@ -15,6 +15,6 @@ export class Appointment {
     @JoinColumn()
     physician: Physician
 
-    @Column()
+    @Column('timestamp without time zone')
     scheduled_time: Timestamp
 }

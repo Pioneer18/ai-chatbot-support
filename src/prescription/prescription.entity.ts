@@ -16,16 +16,16 @@ export class Prescriptions {
     @JoinColumn()
     physician: Physician
 
-    @Column() // should this be fk to medication table?
+    @Column('text') // should this be fk to medication table?
     medication: string
 
-    @Column()
+    @Column('timestamp without time zone')
     start_date: Timestamp
 
-    @Column()
+    @Column('timestamp without time zone')
     end_date: Timestamp
 
-    @Column({nullable: true})
+    @Column('text', {nullable: true})
     remaining_refills: string
 
     @Column(() => AuditableEntity)

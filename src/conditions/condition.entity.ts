@@ -5,12 +5,12 @@ export class Condition {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column('text')
     name: string
 
-    @Column()
+    @Column('text')
     description: string
 
-    @Column()
+    @Column('text')
     severityLevel: string
 }

@@ -5,15 +5,15 @@ export class Medication {
     @PrimaryGeneratedColumn()
     id: number
 
-    @Column()
+    @Column('text')
     name: string
 
-    @Column()
+    @Column('text')
     dosage: string
 
-    @Column()
+    @Column('text')
     type: string
 
-    @Column()
+    @Column('text')
     sideEffects: string
 }

@@ -5,27 +5,27 @@ export class User {
   @PrimaryGeneratedColumn("uuid")
   id: number;
 
-  @Column()
+  @Column('text')
   first_name: string;
 
-  @Column()
+  @Column('text')
   last_name: string;
 
-  @Column({nullable: true})
+  @Column('text', {nullable: true})
   phone_number: string
 
-  @Column()
+  @Column('text')
   email: string
 
-  @Column()
+  @Column('text')
   password_hash: string
 
-  @Column()
+  @Column('text')
   role: string
 
-  @Column({nullable: true})
+  @Column('text', {nullable: true})
   profile_pic: string
 
-  @Column()
+  @Column('boolean')
   is_active: boolean
 }

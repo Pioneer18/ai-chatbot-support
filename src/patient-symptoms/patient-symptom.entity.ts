@@ -16,10 +16,10 @@ export class PatientSymptoms {
     @JoinColumn()
     patient: Patient
 
-    @Column() // not need if we have created_at?
+    @Column('text')
     date: Timestamp
 
-    @Column()
+    @Column('text')
     notes: string
 
     @Column(() => AuditableEntity)
