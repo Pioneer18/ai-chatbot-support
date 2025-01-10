@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { AuthService } from '../service/auth.service';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -25,10 +25,10 @@ describe('AuthController', () => {
   });
 
   it('should generate a jwt', async () => {
-    const result = await controller.login({ username: 'test', sub: 'test' });
+    const result = await controller.login({ firstName: 'Johnny', id: 'test 1' , lastName: 'Apples' });
   
     // Check that generateJwt was called with the expected argument
-    expect(service.generateJwt).toHaveBeenCalledWith({ username: 'test', sub: 'test' });
+    expect(service.generateJwt).toHaveBeenCalledWith({ firstName: 'Johnny', id: 'test 1' , lastName: 'Apples' });
   
     // Update the expectation to match the returned object structure
     expect(result).toEqual({ access_token: 'fake-jwt-token' });  // Use toEqual instead of toBe

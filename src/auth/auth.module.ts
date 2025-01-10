@@ -1,18 +1,20 @@
 // src/auth/auth.module.ts
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthService } from './auth.service';
-import { JwtStrategy } from './jwt.strategy';
-import { JwtAuthGuard } from './jwt.auth-guard';
-import { AuthController } from './auth.controller';
+import { AuthService } from './service/auth.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { JwtAuthGuard } from './guards/jwt.auth-guard';
+import { AuthController } from './controller/auth.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Permission } from './permission.entity';
-import { RolePermissionMapping } from './role-permission-mapping.entity';
-import { Role } from './role.entity';
-import { UserRoleMapping } from './user-role-mapping.entity';
+import { Permission } from './rbac/permission.entity';
+import { RolePermissionMapping } from './rbac/role-permission-mapping.entity';
+import { Role } from './rbac/role.entity';
+import { UserRoleMapping } from './rbac/user-role-mapping.entity';
 
 @Module({
   imports: [
+    // By importing the same secret used when we signed the JWT, we ensure that the verify phase performed by Passport,
+    // and the sign phase performed in our AuthService, use a common secret.
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '60m' },
