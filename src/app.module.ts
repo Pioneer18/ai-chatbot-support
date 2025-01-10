@@ -12,6 +12,13 @@ import { PhysiciansModule } from './physicians/physicians.module';
 import { SymptomConditionMappingModule } from './symptom-condition-mapping/symptom-condition-mapping.module';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { PrescriptionModule } from './prescription/prescription.module';
+import { ChatController } from './chat/chat/chat.controller';
+import { AuthController } from './auth/auth.controller';
+import { PatientsController } from './patients/patients.controller';
+import { PhysiciansController } from './physicians/physicians.controller';
+import { PrescriptionController } from './prescription/prescription.controller';
+import { SymptomConditionMappingController } from './symptom-condition-mapping/symptom-condition-mapping.controller';
+import { UsersController } from './users/users.controller';
 
 @Module({
   imports: [
@@ -36,7 +43,18 @@ import { PrescriptionModule } from './prescription/prescription.module';
     SymptomConditionMappingModule,
     AppointmentsModule,
     PrescriptionModule],
-  controllers: [AppController],
-  providers: [AppService, AiService],
+  controllers: [
+    AppController,
+    AuthController,
+    ChatController,
+    PatientsController,
+    PhysiciansController,
+    PrescriptionController,
+    SymptomConditionMappingController,
+    UsersController],
+  providers: [
+    AppService,
+    AiService
+  ],
 })
 export class AppModule {}
