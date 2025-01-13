@@ -1,7 +1,8 @@
 // src/auth/jwt-payload.interface.ts
-export interface JwtPayload {
+export interface JwtPayloadInterface {
   firstName: string;
   lastName: string;
-  id: number; // Typically, the userId
+  userid: string
+  email: string;
 }
 

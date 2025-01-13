@@ -18,7 +18,8 @@ import { PatientsController } from './patients/patients.controller';
 import { PhysiciansController } from './physicians/physicians.controller';
 import { PrescriptionController } from './prescription/prescription.controller';
 import { SymptomConditionMappingController } from './symptom-condition-mapping/symptom-condition-mapping.controller';
-import { UsersController } from './users/users.controller';
+import { UsersController } from './users/controller/users.controller';
+import { RedisModule } from './redis/redis.module';
 
 @Module({
   imports: [
@@ -42,7 +43,8 @@ import { UsersController } from './users/users.controller';
     PhysiciansModule,
     SymptomConditionMappingModule,
     AppointmentsModule,
-    PrescriptionModule],
+    PrescriptionModule,
+    RedisModule],
   controllers: [
     AppController,
     AuthController,

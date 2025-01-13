@@ -3,7 +3,7 @@ import { Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
 @Entity('users')
 export class User {
   @PrimaryGeneratedColumn("uuid")
-  id: number;
+  id: string;
 
   @Column('text')
   first_name: string;
@@ -12,7 +12,7 @@ export class User {
   last_name: string;
 
   @Column('text', {nullable: true})
-  phone_number: string
+  phone_number?: string
 
   @Column('text')
   email: string
@@ -20,11 +20,17 @@ export class User {
   @Column('text')
   password_hash: string
 
+  @Column('text', {nullable: true})
+  reset_password_token?: string
+
+  @Column('text', {nullable: true})
+  reset_password_expires?: string
+
   @Column('text')
   role: string
 
   @Column('text', {nullable: true})
-  profile_pic: string
+  profile_pic?: string
 
   @Column('boolean')
   is_active: boolean
