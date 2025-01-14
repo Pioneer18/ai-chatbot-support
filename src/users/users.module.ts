@@ -7,7 +7,11 @@ import { User } from './interface/enity/user.entity'
 
 @Module({
   imports: [TypeOrmModule.forFeature([User])],
-  providers: [UsersService, JwtService],
+  exports: [UsersService],
+  providers: [
+    UsersService,
+    JwtService
+  ],
   controllers: [UsersController]
 })
 export class UsersModule {}

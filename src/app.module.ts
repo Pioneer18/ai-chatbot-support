@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ChatModule } from './chat/chat.module';
 import { ConfigModule } from '@nestjs/config';
-import { AiService } from './ai/ai.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -39,7 +38,6 @@ import { User } from './users/interface/enity/user.entity';
       database: process.env.DB,
       autoLoadEntities: true,
     }),
-    TypeOrmModule.forFeature([User]),
     ChatModule,
     AuthModule,
     UsersModule,
@@ -60,9 +58,6 @@ import { User } from './users/interface/enity/user.entity';
     UsersController],
   providers: [
     AppService,
-    AiService,
-    UsersService,
-    JwtService,
   ],
 })
 export class AppModule {}
