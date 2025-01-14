@@ -33,26 +33,24 @@ export class AuthService {
     const token = this.jwtService.sign(payload);
     return `Authentication=${token}; Secure; HttpOnly; Path=/; Max-Age=${process.env.JWT_EXPIRATION_TIME}`;
   }
-
   
+  async logout(req: Request): Promise<string> {
+    const {key, jwt} = await this.extractKeyJwtUtil.extract(req);
+    if (!key || !jwt) {
+      throw new Error
+    }
+    await this.redisService.set(key, jwt);
+    return key;
+  }
+
   async createRole(newRole: Role) {
     return this.roleRepository.create(newRole)
   }
   
-  async logout(req: Request): Promise<string> {
-      const {key, jwt} = await this.extractKeyJwtUtil.extract(req);
-      if (!key || !jwt) {
-        throw new Error
-      }
-      await this.redisService.set(key, jwt);
-      return key;
-  }
   /**
    * Find user in the databse and authenticate their access to the application by verifying the present user credentials in the database
    */
-  
-
-  validateUser = async ({email, pass}): Promise<ValidateUserReturn> => {
+  async validateUser({email, pass}): Promise<ValidateUserReturn> {
     return 
   }
 }

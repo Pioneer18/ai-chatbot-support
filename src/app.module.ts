@@ -46,7 +46,8 @@ import { User } from './users/interface/enity/user.entity';
     SymptomConditionMappingModule,
     AppointmentsModule,
     PrescriptionModule,
-    RedisModule],
+    RedisModule
+  ],
   controllers: [
     AppController,
     AuthController,
@@ -55,7 +56,8 @@ import { User } from './users/interface/enity/user.entity';
     PhysiciansController,
     PrescriptionController,
     SymptomConditionMappingController,
-    UsersController],
+    UsersController
+  ],
   providers: [
     AppService,
   ],

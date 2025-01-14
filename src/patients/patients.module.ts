@@ -15,6 +15,7 @@ import { PatientConditions } from './patient-condition.entity';
     TypeOrmModule.forFeature([PatientConditions])
   ],
   controllers: [PatientsController],
-  providers: [PatientsService]
+  providers: [PatientsService],
+  exports: [PatientsService]
 })
 export class PatientsModule {}

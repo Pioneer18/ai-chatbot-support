@@ -23,7 +23,7 @@ export class AuthController {
   async login(@Body() payload: LoginDto, @Res() res: Response) {
     try{
       const cookie = await this.authService.login(payload);
-      res.setHeader('Set-Cookie', cookie);
+      res.setHeader('Set-Cookie', cookie); // send cookie to user-agent
     } catch(err) {
       res.status(401).json({message: err.message || 'Authentication failed'});
     }
@@ -46,15 +46,14 @@ export class AuthController {
     }
   }
 
+  // resetPassword
+  // resetUsername
+  // deleteAccount
+  // createAccount
+
   @Post('new_role')
   async newRole(@Body() newRole: Role) {
     const result = await this.authService.createRole(newRole);
     return { result}
   }
-
-  // logout
-  // resetPassword
-  // resetUsername
-  // deleteAccount
-  // createAccount
 }
