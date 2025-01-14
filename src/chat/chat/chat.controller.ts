@@ -1,6 +1,6 @@
 // src/chat/chat.controller.ts
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { JwtAuthGuard } from '../../auth/jwt/jwt.auth-guard';
+import { JwtAuthGuard } from '../../auth/guards/jwt.auth-guard';
 
 @Controller('chat')
 export class ChatController {

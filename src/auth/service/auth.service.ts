@@ -8,6 +8,7 @@ import { LoginDto } from '../dto/login.dto';
 import { Request } from 'express';
 import { ExtractKeyJwtUtil } from '../util/extract-key-jwt.util';
 import { RedisService } from '../../redis/service/redis.service';
+import { ValidateUserReturn } from '../interface/service/validate-user-return.interface';
 
 @Injectable()
 export class AuthService {
@@ -51,4 +52,7 @@ export class AuthService {
    */
   
 
+  validateUser = async ({email, pass}): Promise<ValidateUserReturn> => {
+    return 
+  }
 }
