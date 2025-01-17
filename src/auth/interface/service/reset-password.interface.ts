@@ -1,5 +1,5 @@
 export interface ResetPasswordInterface {
-    readonly resetPass: string;
-    readonly confirmPass: string;
-    readonly resetPassworToken: string;
+    readonly newPassword: string;
+    readonly confirmPassword: string;
+    readonly resetPasswordToken: string;
 }

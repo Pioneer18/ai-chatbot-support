@@ -12,18 +12,20 @@ import { RedisService } from '../../redis/service/redis.service';
 import { ExtractKeyJwtUtil } from '../util/extract-key-jwt.util';
 import { User } from '../../users/interface/enity/user.entity';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
+import { ResetPasswordDTO } from '../dto/reset-password.dto';
 
 describe('AuthController', () => {
   let controller: AuthController;
   let service: AuthService;
   let redisService: RedisService;
+  let usersService: UsersService;
   let roleRepository: Repository<Role>;
   let userRepository: Repository<User>;
   let extractKeyJwtUtil: ExtractKeyJwtUtil;
   let cacheManager: Cache
 
   const mockUserRepository = {
-    // put methods here
+    update: jest.fn()
   }
 
   const mockRoleRepository = {
@@ -58,12 +60,13 @@ describe('AuthController', () => {
     }).compile();
 
     controller = module.get<AuthController>(AuthController);
-    service = module.get<AuthService>(AuthService)
-    redisService = module.get<RedisService>(RedisService)
-    extractKeyJwtUtil = module.get<ExtractKeyJwtUtil>(ExtractKeyJwtUtil)
-    cacheManager = module.get<Cache>(CACHE_MANAGER)
-    userRepository = module.get<Repository<User>>(getRepositoryToken(User))
-    roleRepository = module.get<Repository<Role>>(getRepositoryToken(Role))
+    service = module.get<AuthService>(AuthService);
+    redisService = module.get<RedisService>(RedisService);
+    usersService = module.get<UsersService>(UsersService);
+    extractKeyJwtUtil = module.get<ExtractKeyJwtUtil>(ExtractKeyJwtUtil);
+    cacheManager = module.get<Cache>(CACHE_MANAGER);
+    userRepository = module.get<Repository<User>>(getRepositoryToken(User));
+    roleRepository = module.get<Repository<Role>>(getRepositoryToken(Role));
   });
 
   describe('auth controller initialized', () => {
@@ -146,7 +149,7 @@ describe('AuthController', () => {
   });
 
   describe('logout failure', () => {
-    it('should throw an error if service.logout fails', async () => {
+    it('should send a 500 response and not clear the cookie with the jwt', async () => {
       const mockReq = {
         headers: {
           cookie: 'cookie-key=cookie-with-jwt',
@@ -155,13 +158,15 @@ describe('AuthController', () => {
   
       const mockRes = {
         clearCookie: jest.fn(),
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
       } as unknown as Response;
 
-      const errMsg = 'Logout failed';
+      const err = new Error(`unexpected server error: failed to logout`);
   
-      jest.spyOn(service, 'logout').mockRejectedValue(new Error(errMsg));
+      jest.spyOn(service, 'logout').mockRejectedValue(err);
   
-      await expect(controller.logout(mockReq, mockRes)).rejects.toThrow(errMsg);
+      await controller.logout(mockReq, mockRes);
 
       expect(service.logout).toHaveBeenCalledWith(mockReq);
 
@@ -169,8 +174,27 @@ describe('AuthController', () => {
     });
   });
 
-  describe('reset password success', ()=> {
+  describe('reset password', ()=> {
+    it('should on success: update the password and redirect user to login page', async () => {
+      const mockResetPasswordDto: ResetPasswordDTO = {
+        newPassword: 'ghost',
+        confirmPassword: 'section9',
+        resetPasswordToken: 'dhjf9kjgh4kh31'
+      };
 
+      const mockResponse = {
+        redirect: jest.fn(),
+        status: jest.fn().mockReturnThis(),
+        send: jest.fn(),
+      } as unknown as Response;
+
+      jest.spyOn(service, 'resetPassword').mockResolvedValue(null); // it's a void function
+
+      await controller.resetPassword(mockResetPasswordDto, mockResponse);
+
+      expect(service.resetPassword).toHaveBeenCalledWith(mockResetPasswordDto);
+      expect(mockResponse.redirect).toHaveBeenCalledWith('/login'); 
+    })
   });
 
   describe('reset password failure', () => {

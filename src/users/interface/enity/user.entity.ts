@@ -6,32 +6,32 @@ export class User {
   id: string;
 
   @Column('text')
-  first_name: string;
+  firstName: string;
 
   @Column('text')
-  last_name: string;
+  lastName: string;
 
   @Column('text', {nullable: true})
-  phone_number?: string
+  phoneNumber?: string
 
   @Column('text')
   email: string
 
   @Column('text')
-  password_hash: string
+  password: string
 
   @Column('text', {nullable: true})
-  reset_password_token?: string
+  resetPasswordToken?: string
 
   @Column('text', {nullable: true})
-  reset_password_expires?: string
+  resetPasswordExpires?: string
 
   @Column('text')
   role: string
 
   @Column('text', {nullable: true})
-  profile_pic?: string
+  profilePic?: string
 
   @Column('boolean')
-  is_active: boolean
+  isActive: boolean
 }

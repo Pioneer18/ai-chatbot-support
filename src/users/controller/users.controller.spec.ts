@@ -43,9 +43,9 @@ describe('UsersController', () => {
   describe('create unit test', () => {
     it('should create a user', async () => {
       const createUserDto: CreateUserDto = {
-        first_name: 'Solid',
-        last_name: 'Snake',
-        phone_number: '123456789',
+        firstName: 'Solid',
+        lastName: 'Snake',
+        phoneNumber: '123456789',
         email: 'solid.snake@gmail.com',
         password: 'bigboss',
       }
@@ -58,14 +58,14 @@ describe('UsersController', () => {
       expect(user).toEqual(mockUser);
       expect(service.createUser).toHaveBeenCalledWith(createUserDto)
     })
-  })
+  });
 
   describe('update unit test', () => {
     it('should update the user and return the updated user', async () => {
       const updateUserDto: UpdateUserDto = {
-        first_name: 'Solid',
-        last_name: 'Snake',
-        phone_number: '123456789',
+        firstName: 'Solid',
+        lastName: 'Snake',
+        phoneNumber: '123456789',
         email: 'solid.snake@gmail.com',
       }
       const mockUpdateResult: UpdateResult = { affected: 1, raw: [], generatedMaps: [] };
@@ -77,7 +77,19 @@ describe('UsersController', () => {
       expect(user).toEqual(mockUpdateResult);
       expect(service.updateUser).toHaveBeenCalledWith('9d3c5b62-d559-4960-ad1d-da083c089f0e', updateUserDto)
     });
-  })
+  });
+
+  describe('findByEmail unit test', () => {
+    it('should find a user by email', async () => {
+      const emailDto: FindByEmailDto = { email: 'solid.snake@gmail.com' };
+      const mockUser: User = MockUser;
+  
+      jest.spyOn(service, 'findByEmail').mockResolvedValue(mockUser);
+  
+      expect(await controller.findByEmail(emailDto)).toEqual(mockUser);
+      expect(service.findByEmail).toHaveBeenCalledWith(emailDto);
+    });
+  });
 
   describe('remove unit test', () => {
     it('should remove a user', async () => {
@@ -90,17 +102,5 @@ describe('UsersController', () => {
       expect(service.removeUser).toHaveBeenCalledWith(removeUserDto);
   
     });
-  })
-
-  describe('find by email unit test', () => {
-    it('should find a user by email', async () => {
-      const emailDto: FindByEmailDto = { email: 'solid.snake@gmail.com' };
-      const mockUser: User = MockUser;
-  
-      jest.spyOn(service, 'findByEmail').mockResolvedValue(mockUser);
-  
-      expect(await controller.findByEmail(emailDto)).toEqual(mockUser);
-      expect(service.findByEmail).toHaveBeenCalledWith(emailDto);
-    });
-  })
+  });
 });

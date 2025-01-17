@@ -1,5 +1,6 @@
 // src/auth/auth.service.ts
 import { Injectable } from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from '../rbac/role.entity';
@@ -9,6 +10,9 @@ import { Request } from 'express';
 import { ExtractKeyJwtUtil } from '../util/extract-key-jwt.util';
 import { RedisService } from '../../redis/service/redis.service';
 import { ValidateUserReturn } from '../interface/service/validate-user-return.interface';
+import { ResetPasswordInterface } from '../interface/service/reset-password.interface';
+import { UserInterface } from '../../users/interface/user.interface';
+import { CommonErrors } from '../../common/errors/errors';
 
 @Injectable()
 export class AuthService {
@@ -26,25 +30,55 @@ export class AuthService {
    * @param user The user logging into the application
    */
   async login(payload: LoginDto): Promise<string> {
-    const user = await this.userService.findByEmail({email: payload.email});
-    if (!user) {
-      throw new Error('User not found');
+    try {
+      const user = await this.userService.findByEmail({email: payload.email});
+      if (!user) {
+        throw new Error('User not found');
+      }
+      const token = this.jwtService.sign(payload);
+      return `Authentication=${token}; Secure; HttpOnly; Path=/; Max-Age=${process.env.JWT_EXPIRATION_TIME}`;
+    } catch (err) {
+      throw new Error(err);
     }
-    const token = this.jwtService.sign(payload);
-    return `Authentication=${token}; Secure; HttpOnly; Path=/; Max-Age=${process.env.JWT_EXPIRATION_TIME}`;
   }
   
   async logout(req: Request): Promise<string> {
-    const {key, jwt} = await this.extractKeyJwtUtil.extract(req);
-    if (!key || !jwt) {
-      throw new Error
+    try {
+      const {key, jwt} = await this.extractKeyJwtUtil.extract(req);
+      if (!key || !jwt) {
+        throw new Error
+      }
+      await this.redisService.set(key, jwt);
+      return key;
+    } catch (err) {
+      throw new Error(err)
     }
-    await this.redisService.set(key, jwt);
-    return key;
+  }
+
+  async resetPassword(payload: ResetPasswordInterface) {
+    try {
+      let user = await this.userService.findByResetPasswordToken(payload.resetPasswordToken);
+      if (new Date >= user.resetPasswordExpires) {
+        throw new Error('this passowrd reset request has expired, please make a new request.')
+      }
+      
+      await this.verifyNewPassword(payload.newPassword, user);
+      user.password = await bcrypt.hash(payload.newPassword, 10);
+      user.resetPasswordToken = null;
+      user.resetPasswordExpires = null;
+
+      await this.userService.updateUser(user.id, user)
+    } catch (err) {
+      throw new Error(err.message);
+    }
   }
 
   async createRole(newRole: Role) {
-    return this.roleRepository.create(newRole)
+    try {
+      return this.roleRepository.create(newRole)
+    } catch (err) {
+      throw new Error(err);
+    }
   }
   
   /**
@@ -52,5 +86,17 @@ export class AuthService {
    */
   async validateUser({email, pass}): Promise<ValidateUserReturn> {
     return 
+  }
+
+  private async verifyNewPassword(newPass: string, user: UserInterface) {
+    try {
+      const check = await bcrypt.compare(newPass, user.password);
+      if (check) {
+        throw CommonErrors.newPasswordError;
+      }
+      return;
+    } catch (err) {
+      throw new Error(err)
+    }
   }
 }

@@ -1,13 +1,13 @@
 export interface UserInterface {
     id: string;
-    first_name: string;
-    last_name: string;
+    firstName: string;
+    lastName: string;
     phoneNumber?: string;
     email: string;
-    password_hash: string;
+    password: string;
     resetPasswordToken?: string | null;
     resetPasswordExpires?: Date | string | null;
     role: string;
     profilePic?: string;
-    is_active: boolean;
+    isActive: boolean;
 }

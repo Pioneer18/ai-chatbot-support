@@ -9,6 +9,7 @@ import { UpdateUserInterace } from '../interface/service/update-user.interface';
 import { MockUser } from '../../../test/mock-user';
 import { RemoveUserInterface } from '../interface/service/remove-user.interface';
 import { FindByEmailDto } from '../dto/find-user.dto';
+import { UserInterface } from '../interface/user.interface';
 
 describe('UsersService', () => {
   let service: UsersService;
@@ -29,6 +30,7 @@ describe('UsersService', () => {
   };
 
   beforeEach(async () => {
+    jest.resetAllMocks();
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         UsersService,
@@ -51,20 +53,20 @@ describe('UsersService', () => {
   describe('createUser', () => {
     it('should create a new user and return it', async () => {
       const createUserDto: CreateUserDto = {
-        first_name: 'Solid',
-        last_name: 'Snake',
-        phone_number: '123456789',
+        firstName: 'Solid',
+        lastName: 'Snake',
+        phoneNumber: '123456789',
         email: 'solid.snake@gmail.com',
         password: 'bigboss',
       };
       const mockUser: User = { 
         id: '9d3c5b62-d559-4960-ad1d-da083c089f0e',
-        reset_password_expires: '01-10-2025',
-        reset_password_token: 'mockToken',
-        password_hash: 'mockHash',
+        resetPasswordExpires: '01-10-2025',
+        resetPasswordToken: 'mockToken',
+        password: 'mockHash',
         role: 'patient',
-        profile_pic: 'mockPicUrl',
-        is_active: true,
+        profilePic: 'mockPicUrl',
+        isActive: true,
         ...createUserDto,
       };
       mockRepository.create.mockResolvedValue(mockUser);
@@ -78,9 +80,9 @@ describe('UsersService', () => {
   describe('updateUser', () => {
     it('should update a user and return it', async () => {
       const updateUserInterface: UpdateUserInterace = {
-        first_name: 'Solid',
-        last_name: 'Snake',
-        phone_number: '123456789',
+        firstName: 'Solid',
+        lastName: 'Snake',
+        phoneNumber: '123456789',
         email: 'solid.snake@gmail.com',
       };
       const mockUpdateResult: UpdateResult = { affected: 1, raw: [], generatedMaps: [] };
@@ -123,6 +125,19 @@ describe('UsersService', () => {
       expect(mockRepository.findOneBy).toHaveBeenCalledWith(dto);
 
       expect(result).toEqual(mockUser);
+    });
+  });
+
+  describe('findByResetToken', () => {
+    it('should find a user via the resetPasswordToken and return that user entity', async () => {
+      const expectedResult: UserInterface = MockUser;
+      const mockResetPassToken: string = 'mock-reset-password-token';
+
+      mockRepository.findOneBy.mockResolvedValue(MockUser);
+
+      const result = await service.findByResetPasswordToken(mockResetPassToken);
+      console.log(result);
+      expect(result).toEqual(expectedResult);
     });
   });
 

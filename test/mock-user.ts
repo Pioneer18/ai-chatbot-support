@@ -2,14 +2,14 @@ import { User } from '../src/users/interface/enity/user.entity';
 
 export const MockUser: User = {
     id: '9d3c5b62-d559-4960-ad1d-da083c089f0e',
-    reset_password_expires: '01-10-2025',
-    reset_password_token: 'mock-token',
-    password_hash: 'mock-hash',
+    resetPasswordExpires: '01-10-2029',
+    resetPasswordToken: 'mock-token',
+    password: '$2b$10$Q3HmnULDiq/G4.tv.cJX2uUJwv.9iZfBQdg0gyxQHSJHT1kecw6V.', // decrypted: notthispassword
     role: 'patient',
-    profile_pic: 'mock-pic-url',
-    is_active: true,
-    first_name: 'Solid',
-    last_name: 'Snake',
-    phone_number: '123456789',
+    profilePic: 'mock-pic-url',
+    isActive: true,
+    firstName: 'Solid',
+    lastName: 'Snake',
+    phoneNumber: '123456789',
     email: 'solid.snake@gmail.com',
 };

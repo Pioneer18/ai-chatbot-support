@@ -6,7 +6,7 @@ import { LoginDto } from '../dto/login.dto';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { Response, Request } from 'express';
 import { JwtAuthGuard } from '../guards/jwt.auth-guard';
-import { KeyJwtInterface } from '../interface/service/cookie-key-value.interface';
+import { ResetPasswordDTO } from '../dto/reset-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -42,16 +42,25 @@ export class AuthController {
       res.clearCookie(key, { path: '/' });
       return {message: 'logged out successfully'}
     } catch (err) {
-      throw new Error(err)
+      res.status(500).json({message: err.message || 'Logout failed'});
     }
   }
 
-  // resetPassword
+  @Post('reset-password')
+  async resetPassword(@Body() payload: ResetPasswordDTO, @Res({passthrough: true}) res: Response) {
+    try {
+      await this.authService.resetPassword(payload);
+      res.redirect('/login')
+    } catch(err) {
+      res.status(500).json({message: 'unexpected server error: failed to reset the password'});
+    }
+  }
+
   // resetUsername
   // deleteAccount
   // createAccount
 
-  @Post('new_role')
+  @Post('new-role')
   async newRole(@Body() newRole: Role) {
     const result = await this.authService.createRole(newRole);
     return { result}
