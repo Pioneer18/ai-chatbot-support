@@ -93,6 +93,32 @@ describe('AuthController', () => {
     });
   })
 
+  describe('login failure', () => {
+    it('should return error message for authentication failed', async () => {
+      const loginDto: LoginDto = {
+        email: 'solid.snake@gmail.com',
+        password: 'bigboss'
+      }
+     
+      const err = new Error(`the given credentials are incorrect`);
+
+      const mockResponse: Response = {
+        setHeader: jest.fn(),
+        status: jest.fn().mockReturnThis(), // Allow method chaining
+        json: jest.fn()
+      } as unknown as Response;
+
+      jest.spyOn(service, 'login').mockRejectedValue(err);
+
+      await controller.login(loginDto, mockResponse as Response);
+
+      expect(mockResponse.status).toHaveBeenCalledWith(401); // Check status was set
+      expect(mockResponse.json).toHaveBeenCalledWith({
+        message: err.message || 'Authentication failed',
+      });
+    });
+  });
+
   describe('logout success', () => {
     it('should expire an valid JWT by placing it in the Redis dead-list', async () => {
       const mockReq = {
@@ -117,7 +143,7 @@ describe('AuthController', () => {
       
       expect(controllerResponse).toEqual({message: 'logged out successfully'})
     });
-  })
+  });
 
   describe('logout failure', () => {
     it('should throw an error if service.logout fails', async () => {
@@ -141,6 +167,14 @@ describe('AuthController', () => {
 
       expect(mockRes.clearCookie).not.toHaveBeenCalled()
     });
-  })
+  });
+
+  describe('reset password success', ()=> {
+
+  });
+
+  describe('reset password failure', () => {
+
+  });
   
 });
