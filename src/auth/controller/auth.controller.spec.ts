@@ -75,7 +75,7 @@ describe('AuthController', () => {
     });
   })
 
-  describe('login success', () => {
+  describe('login', () => {
     it('should return response header with signed JWT cookie set', async () => {
       const loginDto: LoginDto = {
         email: 'solid.snake@gmail.com',
@@ -94,9 +94,7 @@ describe('AuthController', () => {
 
       expect(mockResponse.setHeader).toHaveBeenCalledWith('Set-Cookie', 'cookie-with-jwt');
     });
-  })
 
-  describe('login failure', () => {
     it('should return error message for authentication failed', async () => {
       const loginDto: LoginDto = {
         email: 'solid.snake@gmail.com',
@@ -122,7 +120,7 @@ describe('AuthController', () => {
     });
   });
 
-  describe('logout success', () => {
+  describe('logout', () => {
     it('should expire an valid JWT by placing it in the Redis dead-list', async () => {
       const mockReq = {
         headers: {
@@ -146,9 +144,7 @@ describe('AuthController', () => {
       
       expect(controllerResponse).toEqual({message: 'logged out successfully'})
     });
-  });
-
-  describe('logout failure', () => {
+    
     it('should send a 500 response and not clear the cookie with the jwt', async () => {
       const mockReq = {
         headers: {
@@ -161,20 +157,20 @@ describe('AuthController', () => {
         status: jest.fn().mockReturnThis(),
         json: jest.fn(),
       } as unknown as Response;
-
+  
       const err = new Error(`unexpected server error: failed to logout`);
   
       jest.spyOn(service, 'logout').mockRejectedValue(err);
   
       await controller.logout(mockReq, mockRes);
-
+  
       expect(service.logout).toHaveBeenCalledWith(mockReq);
-
+  
       expect(mockRes.clearCookie).not.toHaveBeenCalled()
     });
   });
 
-  describe('reset password', ()=> {
+  describe('resetPassword', ()=> {
     it('should on success: update the password and redirect user to login page', async () => {
       const mockResetPasswordDto: ResetPasswordDTO = {
         newPassword: 'ghost',
@@ -195,10 +191,9 @@ describe('AuthController', () => {
       expect(service.resetPassword).toHaveBeenCalledWith(mockResetPasswordDto);
       expect(mockResponse.redirect).toHaveBeenCalledWith('/login'); 
     })
-  });
 
-  describe('reset password failure', () => {
-
+    it('should on failure: send a 500 response with the error message', async () => {
+      // do some stuff...
+    })
   });
-  
 });

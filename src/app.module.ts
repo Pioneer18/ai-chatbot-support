@@ -19,9 +19,10 @@ import { PrescriptionController } from './prescription/prescription.controller';
 import { SymptomConditionMappingController } from './symptom-condition-mapping/symptom-condition-mapping.controller';
 import { UsersController } from './users/controller/users.controller';
 import { RedisModule } from './redis/redis.module';
-import { UsersService } from './users/service/users.service';
-import { JwtService } from '@nestjs/jwt';
-import { User } from './users/interface/enity/user.entity';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { HttpErrorFilter } from './common/filters/http-error.filter';
+import { LoggingInterceptor } from './common/interceptors/logging-interceptor';
+import { ErrorFilter } from './common/filters/error.filters';
 
 @Module({
   imports: [
@@ -60,6 +61,9 @@ import { User } from './users/interface/enity/user.entity';
   ],
   providers: [
     AppService,
+    { provide: APP_FILTER, useClass: HttpErrorFilter},
+    { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
+    { provide: APP_FILTER, useClass: ErrorFilter },
   ],
 })
 export class AppModule {}
