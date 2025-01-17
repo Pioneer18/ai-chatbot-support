@@ -32,7 +32,6 @@ export class ErrorFilter implements ExceptionFilter {
     const err = {
       message: error.message,
       name: error.name,
-      teehee: `have a nice day :)`,
     };
     const log = {
       method: `${method}`,

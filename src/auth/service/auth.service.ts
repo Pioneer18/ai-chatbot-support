@@ -5,14 +5,14 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from '../rbac/role.entity';
 import { UsersService } from '../../users/service/users.service';
-import { LoginDto } from '../dto/login.dto';
-import { Request } from 'express';
+import e, { Request } from 'express';
 import { ExtractKeyJwtUtil } from '../util/extract-key-jwt.util';
 import { RedisService } from '../../redis/service/redis.service';
 import { ValidateUserReturn } from '../interface/service/validate-user-return.interface';
 import { ResetPasswordInterface } from '../interface/service/reset-password.interface';
 import { UserInterface } from '../../users/interface/user.interface';
 import { CommonErrors } from '../../common/errors/errors';
+import { LoginInterface } from '../interface/service/login.interface';
 
 @Injectable()
 export class AuthService {
@@ -26,23 +26,41 @@ export class AuthService {
   ) {}
 
   /**
+   * **summary**:  Find the user in the database and authenticate their access to the application by verifying the present user credentials in the database
+   * @param email The user email
+   * @param pass The user password
+   */
+  validateUser = async (credentials: LoginInterface): Promise<UserInterface> => {
+    try {
+      const user = await this.userService.findByEmail({email: credentials.email});
+      if (!user) throw CommonErrors.invalidEmail;
+
+      await this.verifySamePassword(credentials.password, user.password);
+      return user;
+    } catch (err) {
+      throw err;
+    }
+  }
+
+  /**
    * summary: Return a JWT inside of a Cookie, which may only be interacted with by Http and not Javascript, to the now authenticated user
    * @param user The user logging into the application
    */
-  async login(payload: LoginDto): Promise<string> {
+  login = async (loginDto: LoginInterface): Promise<string> => {
     try {
-      const user = await this.userService.findByEmail({email: payload.email});
+      console.log('ENTERING: AuthService: Login');
+      const user = await this.userService.findByEmail({email: loginDto.email});
       if (!user) {
         throw new Error('User not found');
       }
-      const token = this.jwtService.sign(payload);
+      const token = this.jwtService.sign(loginDto);
       return `Authentication=${token}; Secure; HttpOnly; Path=/; Max-Age=${process.env.JWT_EXPIRATION_TIME}`;
     } catch (err) {
-      throw new Error(err);
+      throw err;
     }
   }
   
-  async logout(req: Request): Promise<string> {
+  logout = async (req: Request): Promise<string> => {
     try {
       const {key, jwt} = await this.extractKeyJwtUtil.extract(req);
       if (!key || !jwt) {
@@ -55,48 +73,50 @@ export class AuthService {
     }
   }
 
-  async resetPassword(payload: ResetPasswordInterface) {
+  changePassword = async () => {
+
+  }
+
+  forgotPassword = async () => {
+
+  }
+
+  forgotEmail = async () => {
+
+  }
+
+  resetPassword = async (resetPasswordDto: ResetPasswordInterface) => {
     try {
-      let user = await this.userService.findByResetPasswordToken(payload.resetPasswordToken);
+      let user = await this.userService.findByResetPasswordToken(resetPasswordDto.resetPasswordToken);
       if (new Date >= user.resetPasswordExpires) {
         throw new Error('this passowrd reset request has expired, please make a new request.')
       }
       
-      await this.verifyNewPassword(payload.newPassword, user);
-      user.password = await bcrypt.hash(payload.newPassword, 10);
+      await this.verifyNewPassword(resetPasswordDto.newPassword, user);
+      user.password = await bcrypt.hash(resetPasswordDto.newPassword, 10);
       user.resetPasswordToken = null;
       user.resetPasswordExpires = null;
 
       await this.userService.updateUser(user.id, user)
     } catch (err) {
-      throw new Error(err.message);
+      throw err;
     }
   }
 
-  async createRole(newRole: Role) {
-    try {
-      return this.roleRepository.create(newRole)
-    } catch (err) {
-      throw new Error(err);
-    }
-  }
-  
-  /**
-   * Find user in the databse and authenticate their access to the application by verifying the present user credentials in the database
-   */
-  async validateUser({email, pass}): Promise<ValidateUserReturn> {
-    return 
-  }
-
-  private async verifyNewPassword(newPass: string, user: UserInterface) {
-    try {
+  private verifyNewPassword = async(newPass: string, user: UserInterface): Promise<void> => {
       const check = await bcrypt.compare(newPass, user.password);
       if (check) {
         throw CommonErrors.newPasswordError;
       }
       return;
-    } catch (err) {
-      throw new Error(err)
-    }
   }
+
+  private verifySamePassword = async(incoming: string, current: string): Promise<void> => {
+    if (!bcrypt.compare(incoming, current)) {
+      throw CommonErrors.invalidPassword;
+    }
+    return;
+  }
+
+  // Role endpionts?
 }

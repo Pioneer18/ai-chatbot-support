@@ -13,6 +13,7 @@ import { ExtractKeyJwtUtil } from '../util/extract-key-jwt.util';
 import { User } from '../../users/interface/enity/user.entity';
 import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 import { ResetPasswordDTO } from '../dto/reset-password.dto';
+import { ChangePasswordDto } from '../dto/change-password.dto';
 
 describe('AuthController', () => {
   let controller: AuthController;
@@ -170,6 +171,49 @@ describe('AuthController', () => {
     });
   });
 
+  describe('changePassword', () => {
+    it('should validate the verify the original and new password before updating password on the user', async () => {
+      // TODO
+      const dto: ChangePasswordDto = {
+        originalPassword: 'notthispassword!', // should be the pass on the MockUser
+        newPassword: 'codingissofun',
+        confirmPassword: 'codingissofun',
+      };
+    });
+
+    it('should return a 400 response due to original password not being correct', async () => {
+
+    });
+
+    it('should return a 400 response due to new password not matching the confirm new password', async () => {
+      // TODO
+    });
+  });
+  
+  describe('forgotPassword', () => {
+    it('should verify the email belongs to a user and send the reset link to the email', async () => {
+      // TODO
+    });
+
+    it('should return a 400 response due to the email not belonging to a user', () => {
+      // TODO
+    })
+  });
+
+  describe('forgotEmail', () => {
+    it('should verify the given password and ask a validation question before sending recovery info to alternate email or phone', () => {
+      // TODO
+    });
+
+    it('should send 400 response for bad password request', async () => {
+
+    });
+
+    it('should send 400 response for bad validation response', async () => {
+
+    });
+  })
+  
   describe('resetPassword', ()=> {
     it('should on success: update the password and redirect user to login page', async () => {
       const mockResetPasswordDto: ResetPasswordDTO = {
@@ -192,8 +236,9 @@ describe('AuthController', () => {
       expect(mockResponse.redirect).toHaveBeenCalledWith('/login'); 
     })
 
-    it('should on failure: send a 500 response with the error message', async () => {
-      // do some stuff...
+    it('should send a 400 response due to the new password not matching the confirm password', async () => {
+      // TODO
     })
   });
+
 });

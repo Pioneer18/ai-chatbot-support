@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthService } from './auth.service';
-import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../../users/service/users.service';
 import { MockUser } from '../../../test/mock-user';
@@ -121,7 +120,19 @@ describe('AuthService', () => {
     });
   });
 
-  describe('reset password', () => {
+  describe('changePassword', () => {
+
+  });
+
+  describe('forgotPassword', () => {
+
+  });
+
+  describe('forgotEmail', () => {
+
+  });
+
+  describe('resetPassword', () => {
     it('should on success: update the user password', async () => {
       const mockPayload: ResetPasswordInterface = {
         newPassword: 'averysupersecretpassword!',
@@ -138,5 +149,25 @@ describe('AuthService', () => {
       expect(userService.findByResetPasswordToken).toHaveBeenCalledWith(mockPayload.resetPasswordToken);
       expect(userService.updateUser).toHaveBeenCalledWith(mockUser.id, mockUser);
     })
-  })
+  });
+
+  describe('validateUser', () => {
+    it('should validate that the credentials belong to a user in the database and return a user',
+      async() => {
+        const expectedResult: UserInterface = MockUser;
+        const loginDto: LoginInterface = {
+          email: expectedResult.email,
+          password: 'notthispassword',
+        }
+
+        jest.spyOn(userService, 'findByEmail').mockResolvedValue(expectedResult);
+        // verify the passwords match, with a bcrypt util? 
+
+        const result = await service.validateUser(loginDto)
+        expect(result).toEqual(expectedResult);
+        expect(userService.findByEmail).toHaveBeenCalledWith({ email: expectedResult.email });
+      }
+    )
+  });
+
 });

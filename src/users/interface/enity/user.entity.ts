@@ -5,33 +5,33 @@ export class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @Column('text')
+  @Column({ name: 'first_name', type: 'text' })
   firstName: string;
 
-  @Column('text')
+  @Column({ name: 'last_name', type: 'text' })
   lastName: string;
 
-  @Column('text', {nullable: true})
+  @Column({name: 'phone_number', type: 'text',nullable: true })
   phoneNumber?: string
 
-  @Column('text')
+  @Column({ name: 'email', type: 'text' })
   email: string
 
-  @Column('text')
+  @Column({ name: 'password', type: 'text' })
   password: string
 
-  @Column('text', {nullable: true})
+  @Column({ name: 'reset_password_token', type: 'text', nullable: true })
   resetPasswordToken?: string
 
-  @Column('text', {nullable: true})
+  @Column({ name: 'reset_password_expires', type: 'text', nullable: true })
   resetPasswordExpires?: string
 
-  @Column('text')
+  @Column({ name: 'role', type: 'text' })
   role: string
 
-  @Column('text', {nullable: true})
+  @Column({ name: 'profile_pic', type: 'text', nullable: true })
   profilePic?: string
 
-  @Column('boolean')
+  @Column({ name: 'is_active', type: 'boolean' })
   isActive: boolean
 }

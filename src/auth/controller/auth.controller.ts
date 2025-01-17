@@ -56,13 +56,5 @@ export class AuthController {
     }
   }
 
-  // resetUsername
-  // deleteAccount
-  // createAccount
-
-  @Post('new-role')
-  async newRole(@Body() newRole: Role) {
-    const result = await this.authService.createRole(newRole);
-    return { result}
-  }
+  // Role endpoints?
 }

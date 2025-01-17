@@ -15,7 +15,7 @@ import { RedisService } from 'src/redis/service/redis.service';
 import { ExtractKeyJwtUtil } from './util/extract-key-jwt.util';
 import { User } from 'src/users/interface/enity/user.entity';
 import { CacheModule } from '@nestjs/cache-manager';
-import { LocalAuthGuard } from './guards/local-auth.guard';
+import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
   imports: [
@@ -45,8 +45,8 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
   providers: [
     AuthService,
     JwtStrategy,
+    LocalStrategy,
     JwtAuthGuard,
-    LocalAuthGuard,
     UsersService,
     RedisService,
     ExtractKeyJwtUtil,
@@ -54,7 +54,6 @@ import { LocalAuthGuard } from './guards/local-auth.guard';
   exports: [
     AuthService,
     JwtAuthGuard,
-    LocalAuthGuard,
     ExtractKeyJwtUtil
   ],
 })
