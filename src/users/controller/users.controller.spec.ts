@@ -40,7 +40,7 @@ describe('UsersController', () => {
     expect(controller).toBeDefined();
   });
 
-  describe('create unit test', () => {
+  describe('create', () => {
     it('should create a user', async () => {
       const createUserDto: CreateUserDto = {
         firstName: 'Solid',
@@ -60,7 +60,7 @@ describe('UsersController', () => {
     })
   });
 
-  describe('update unit test', () => {
+  describe('update', () => {
     it('should update the user and return the updated user', async () => {
       const updateUserDto: UpdateUserDto = {
         firstName: 'Solid',
@@ -79,7 +79,7 @@ describe('UsersController', () => {
     });
   });
 
-  describe('findByEmail unit test', () => {
+  describe('findByEmail', () => {
     it('should find a user by email', async () => {
       const emailDto: FindByEmailDto = { email: 'solid.snake@gmail.com' };
       const mockUser: User = MockUser;
@@ -91,7 +91,7 @@ describe('UsersController', () => {
     });
   });
 
-  describe('remove unit test', () => {
+  describe('remove', () => {
     it('should remove a user', async () => {
       const removeUserDto: RemoveUserDto = { email: 'solid.snake@gmail.com', password: 'bigboss' };
   

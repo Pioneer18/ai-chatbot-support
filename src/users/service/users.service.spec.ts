@@ -59,16 +59,7 @@ describe('UsersService', () => {
         email: 'solid.snake@gmail.com',
         password: 'bigboss',
       };
-      const mockUser: User = { 
-        id: '9d3c5b62-d559-4960-ad1d-da083c089f0e',
-        resetPasswordExpires: '01-10-2025',
-        resetPasswordToken: 'mockToken',
-        password: 'mockHash',
-        role: 'patient',
-        profilePic: 'mockPicUrl',
-        isActive: true,
-        ...createUserDto,
-      };
+      const mockUser: UserInterface = MockUser;
       mockRepository.create.mockResolvedValue(mockUser);
 
       const result = await service.createUser(createUserDto);
@@ -93,52 +84,6 @@ describe('UsersService', () => {
       expect(mockRepository.update).toHaveBeenCalledWith('9d3c5b62-d559-4960-ad1d-da083c089f0e', updateUserInterface);
       
     })
-  })
-
-  describe('removeUser', () => {
-    it('should delete a user by email', async () => {
-      const removeUserDto: RemoveUserInterface = { email: 'solid.snake@gmail.com', password: 'bigboss' };
-      mockRepository.delete.mockResolvedValue({ affected: 1 });
-
-      await service.removeUser(removeUserDto);
-      expect(mockRepository.delete).toHaveBeenCalledWith(removeUserDto.email);
-    });
-
-    it('should handle non-existent user deletion gracefully', async () => {
-      const removeUserDto: RemoveUserInterface = { email: 'solid.snake@gmail.com', password: 'bigboss' };
-      mockRepository.delete.mockResolvedValue({ affected: 0 });
-
-      await service.removeUser(removeUserDto);
-      expect(mockRepository.delete).toHaveBeenCalledWith(removeUserDto.email);
-    });
-  });
-
-  describe('findByEmail', () => {
-    it('should return a single user by email', async () => {
-      const mockUser: User = MockUser; 
-      const dto: FindByEmailDto = { email: 'solid.snake@gmail.com' };
-
-      mockRepository.findOneBy.mockResolvedValue(mockUser);
-
-      const result = await service.findByEmail(dto);
-
-      expect(mockRepository.findOneBy).toHaveBeenCalledWith(dto);
-
-      expect(result).toEqual(mockUser);
-    });
-  });
-
-  describe('findByResetToken', () => {
-    it('should find a user via the resetPasswordToken and return that user entity', async () => {
-      const expectedResult: UserInterface = MockUser;
-      const mockResetPassToken: string = 'mock-reset-password-token';
-
-      mockRepository.findOneBy.mockResolvedValue(MockUser);
-
-      const result = await service.findByResetPasswordToken(mockResetPassToken);
-      console.log(result);
-      expect(result).toEqual(expectedResult);
-    });
   });
 
   describe('findAll', () => {
@@ -162,6 +107,34 @@ describe('UsersService', () => {
       expect(mockRepository.findOneBy).toHaveBeenCalledWith({ id: '1' });
     });
 
+    describe('findByEmail', () => {
+      it('should return a single user by email', async () => {
+        const mockUser: User = MockUser; 
+        const dto: FindByEmailDto = { email: 'solid.snake@gmail.com' };
+  
+        mockRepository.findOneBy.mockResolvedValue(mockUser);
+  
+        const result = await service.findByEmail(dto);
+  
+        expect(mockRepository.findOneBy).toHaveBeenCalledWith(dto);
+  
+        expect(result).toEqual(mockUser);
+      });
+    });
+  
+    describe('findByResetPasswordToken', () => {
+      it('should find a user via the resetPasswordToken and return that user entity', async () => {
+        const expectedResult: UserInterface = MockUser;
+        const mockResetPassToken: string = 'mock-reset-password-token';
+  
+        mockRepository.findOneBy.mockResolvedValue(MockUser);
+  
+        const result = await service.findByResetPasswordToken(mockResetPassToken);
+        console.log(result);
+        expect(result).toEqual(expectedResult);
+      });
+    });
+
     it('should return null if no user is found', async () => {
       mockRepository.findOneBy.mockResolvedValue(null);
 
@@ -171,4 +144,21 @@ describe('UsersService', () => {
     });
   });
 
+  describe('removeUser', () => {
+    it('should delete a user by email', async () => {
+      const removeUserDto: RemoveUserInterface = { email: 'solid.snake@gmail.com', password: 'bigboss' };
+      mockRepository.delete.mockResolvedValue({ affected: 1 });
+
+      await service.removeUser(removeUserDto);
+      expect(mockRepository.delete).toHaveBeenCalledWith(removeUserDto.email);
+    });
+
+    it('should handle non-existent user deletion gracefully', async () => {
+      const removeUserDto: RemoveUserInterface = { email: 'solid.snake@gmail.com', password: 'bigboss' };
+      mockRepository.delete.mockResolvedValue({ affected: 0 });
+
+      await service.removeUser(removeUserDto);
+      expect(mockRepository.delete).toHaveBeenCalledWith(removeUserDto.email);
+    });
+  });
 });
