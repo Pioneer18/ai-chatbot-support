@@ -8,7 +8,6 @@ import { UsersService } from '../../users/service/users.service';
 import e, { Request } from 'express';
 import { ExtractKeyJwtUtil } from '../util/extract-key-jwt.util';
 import { RedisService } from '../../redis/service/redis.service';
-import { ValidateUserReturn } from '../interface/service/validate-user-return.interface';
 import { ResetPasswordInterface } from '../interface/service/reset-password.interface';
 import { UserInterface } from '../../users/interface/user.interface';
 import { CommonErrors } from '../../common/errors/errors';

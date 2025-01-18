@@ -21,9 +21,11 @@ import { LocalStrategy } from './strategies/local.strategy';
   imports: [
     // By importing the same secret used when we signed the JWT, we ensure that the verify phase performed by Passport,
     // and the sign phase performed in our AuthService, use a common secret.
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '60m' },
+    JwtModule.registerAsync({
+      useFactory: async () => ({
+        secret: process.env.JWT_SECRET,
+        signOptions: { expiresIn: '60m' },
+      }),
     }),
     CacheModule.registerAsync({
       // imports: [],
