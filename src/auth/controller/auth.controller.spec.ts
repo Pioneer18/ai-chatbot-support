@@ -86,7 +86,9 @@ describe('AuthController', () => {
 
     it('should return response header with signed JWT cookie set', async () => {
       const mockResponse: Response = {
-        setHeader: jest.fn()
+        setHeader: jest.fn(),
+        status: jest.fn().mockReturnThis(),
+        json: jest.fn(),
       } as unknown as Response;
     
       jest.spyOn(service, 'login').mockResolvedValue('cookie-with-jwt');
