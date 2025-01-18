@@ -47,7 +47,6 @@ export class AuthService {
   login = async (loginDto: LoginInterface): Promise<string> => {
     try {
       const token = await this.jwtService.sign(loginDto);
-      console.log(token);
       return `Authentication=${token}; Secure; HttpOnly; Path=/; Max-Age=${process.env.JWT_EXPIRATION_TIME}`;
     } catch (err) {
       throw err;

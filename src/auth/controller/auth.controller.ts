@@ -21,9 +21,8 @@ export class AuthController {
   async login(@Req() req: Request, @Res() res: Response) {
     try{
       const user: any = req.user
-      console.log(`LocalAuthGuard: found user: \n${JSON.stringify(user, null, 3)}`);
       const cookie = await this.authService.login({email: user.email, password: user.password});
-      res.setHeader('Set-Cookie', cookie); // send cookie to user-agent
+      res.setHeader('Set-Cookie', cookie);
       return res.send(req.user);
     } catch(err) {
       res.status(401).json({message: err.message || 'Authentication failed'});
