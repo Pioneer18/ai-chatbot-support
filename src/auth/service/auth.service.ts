@@ -33,10 +33,9 @@ export class AuthService {
   validateUser = async (credentials: LoginInterface): Promise<UserInterface> => {
     try {
       const user = await this.userService.findByEmail({email: credentials.email});
-      if (!user) throw CommonErrors.invalidEmail;
-
       await this.verifySamePassword(credentials.password, user.password);
       return user;
+
     } catch (err) {
       throw err;
     }
@@ -48,12 +47,9 @@ export class AuthService {
    */
   login = async (loginDto: LoginInterface): Promise<string> => {
     try {
-      console.log('ENTERING: AuthService: Login');
-      const user = await this.userService.findByEmail({email: loginDto.email});
-      if (!user) {
-        throw new Error('User not found');
-      }
-      const token = this.jwtService.sign(loginDto);
+      console.log('signing the token now...');
+      const token = await this.jwtService.sign(loginDto);
+      console.log(token);
       return `Authentication=${token}; Secure; HttpOnly; Path=/; Max-Age=${process.env.JWT_EXPIRATION_TIME}`;
     } catch (err) {
       throw err;
@@ -88,7 +84,7 @@ export class AuthService {
   resetPassword = async (resetPasswordDto: ResetPasswordInterface) => {
     try {
       let user = await this.userService.findByResetPasswordToken(resetPasswordDto.resetPasswordToken);
-      if (new Date >= user.resetPasswordExpires) {
+      if (new Date >= new Date(user.resetPasswordExpires)) {
         throw new Error('this passowrd reset request has expired, please make a new request.')
       }
       

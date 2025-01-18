@@ -14,6 +14,7 @@ import { ExtractKeyJwtUtil } from '../util/extract-key-jwt.util';
 import { RedisService } from '../../redis/service/redis.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { ResetPasswordInterface } from '../interface/service/reset-password.interface';
+import * as bcrypt from 'bcrypt';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -129,7 +130,9 @@ describe('AuthService', () => {
   });
 
   describe('forgotEmail', () => {
-
+    it('', async () => {
+      console.log(await bcrypt.hash('password', 10));
+    });
   });
 
   describe('resetPassword', () => {

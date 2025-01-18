@@ -1,8 +1,6 @@
 // src/auth/auth.controller.ts
 import { Controller, Post, Body, HttpCode, UseGuards, Res, Req } from '@nestjs/common';
 import { AuthService } from '../service/auth.service';
-import { Role } from '../rbac/role.entity';
-import { LoginDto } from '../dto/login.dto';
 import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { Response, Request } from 'express';
 import { JwtAuthGuard } from '../guards/jwt.auth-guard';
@@ -18,12 +16,15 @@ export class AuthController {
     * @param password The user's submitted password to be validated
     */
   @HttpCode(200)
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(LocalAuthGuard)  // extracts email and password from body, validates, and puts user in req
   @Post('login')
-  async login(@Body() payload: LoginDto, @Res() res: Response) {
+  async login(@Req() req: Request, @Res() res: Response) {
     try{
-      const cookie = await this.authService.login(payload);
+      const user: any = req.user
+      console.log(`LocalAuthGuard: found user: \n${JSON.stringify(user, null, 3)}`);
+      const cookie = await this.authService.login({email: user.email, password: user.password});
       res.setHeader('Set-Cookie', cookie); // send cookie to user-agent
+      return res.send(req.user);
     } catch(err) {
       res.status(401).json({message: err.message || 'Authentication failed'});
     }

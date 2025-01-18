@@ -77,31 +77,28 @@ describe('AuthController', () => {
   })
 
   describe('login', () => {
-    it('should return response header with signed JWT cookie set', async () => {
-      const loginDto: LoginDto = {
+    const mockRequest: Request = {
+       user: {
         email: 'solid.snake@gmail.com',
-        password: 'bigboss'
-      }
-      
+        password: 'metalgear'
+       }
+    } as unknown as Request;
+
+    it('should return response header with signed JWT cookie set', async () => {
       const mockResponse: Response = {
         setHeader: jest.fn()
       } as unknown as Response;
     
       jest.spyOn(service, 'login').mockResolvedValue('cookie-with-jwt');
 
-      await controller.login(loginDto, mockResponse);
+      await controller.login(mockRequest, mockResponse);
       
-      expect(service.login).toHaveBeenCalledWith(loginDto);
+      expect(service.login).toHaveBeenCalledWith(mockRequest.user);
 
       expect(mockResponse.setHeader).toHaveBeenCalledWith('Set-Cookie', 'cookie-with-jwt');
     });
 
     it('should return error message for authentication failed', async () => {
-      const loginDto: LoginDto = {
-        email: 'solid.snake@gmail.com',
-        password: 'bigboss'
-      }
-     
       const err = new Error(`the given credentials are incorrect`);
 
       const mockResponse: Response = {
@@ -112,7 +109,7 @@ describe('AuthController', () => {
 
       jest.spyOn(service, 'login').mockRejectedValue(err);
 
-      await controller.login(loginDto, mockResponse as Response);
+      await controller.login(mockRequest, mockResponse as Response);
 
       expect(mockResponse.status).toHaveBeenCalledWith(401); // Check status was set
       expect(mockResponse.json).toHaveBeenCalledWith({
