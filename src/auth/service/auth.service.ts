@@ -97,14 +97,14 @@ export class AuthService {
   }
 
   private verifyNewPassword = async(newPass: string, user: UserInterface): Promise<void> => {
-      if (await bcrypt.compare(newPass, user.password)) {
-        throw CommonErrors.newPasswordError;
-      }
-      return;
+    if (await bcrypt.compare(newPass, user.password)) {
+      throw CommonErrors.newPasswordError;
+    }
+    return;
   }
 
   private verifySamePassword = async(incoming: string, current: string): Promise<void> => {
-    if (! await bcrypt.compare(incoming, current)) {
+    if (!await bcrypt.compare(incoming, current)) {
       throw CommonErrors.invalidPassword;
     }
     return;
