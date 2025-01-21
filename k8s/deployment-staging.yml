@@ -51,6 +51,10 @@ spec:
                 secretKeyRef:
                   name: db-credentials
                   key: DB_PORT
+            - name: REDIS_HOST
+              value: "localhost"
+            - name: REDIS_PORT
+              value: "8000"
           readinessProbe:
             periodSeconds: 5
             exec:
@@ -78,6 +82,17 @@ spec:
             requests:
               memory: "256Mi"
               cpu: "500m"
+        - image: redis:latest
+          name: redis
+          ports:
+            - containerPort: 8000
+          env:
+            - name: REDIS_PORT
+              value: "8000"
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
       volumes:
         - name: cloudsql-sa-credentials
           secret:

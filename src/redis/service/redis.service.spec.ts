@@ -1,18 +1,11 @@
+import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { Test, TestingModule } from '@nestjs/testing';
+import { Cache } from 'cache-manager';
 import { RedisService } from './redis.service';
-import { CACHE_MANAGER, Cache } from '@nestjs/cache-manager';
 
 describe('RedisService', () => {
-  let service: RedisService;
-  let cacheManager: Cache
-
-  let mockCacheManager = {
-    get: jest.fn().mockResolvedValue('some-users-jwt'),
-    set: jest.fn(),
-    del: jest.fn(),
-    reset: jest.fn(),
-  } as unknown as Cache;
-  const mockKey = 'test-key';
+  let redisService: RedisService;
+  let cacheManager: Cache;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,40 +13,54 @@ describe('RedisService', () => {
         RedisService,
         {
           provide: CACHE_MANAGER,
-          useValue: mockCacheManager
-        }
+          useValue: {
+            get: jest.fn(),
+            set: jest.fn(),
+          },
+        },
       ],
     }).compile();
 
-    service = module.get<RedisService>(RedisService);
+    redisService = module.get<RedisService>(RedisService);
     cacheManager = module.get<Cache>(CACHE_MANAGER);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
+  describe('get', () => {
+    it('should retrieve a value from the cache', async () => {
+      const key = 'test-key';
+      const mockValue = 'test-value';
+      jest.spyOn(cacheManager, 'get').mockResolvedValue(mockValue);
+
+      const result = await redisService.get(key);
+
+      expect(cacheManager.get).toHaveBeenCalledWith(key);
+      expect(result).toBe(mockValue);
+    });
   });
 
-  describe('get method test', () => {
-    it('should return the jwt for the given key', async () => {
-      const result = await service.get(mockKey);
-      expect(cacheManager.get).toHaveBeenCalledWith(mockKey);
-      expect(result).toEqual('some-users-jwt');
-    })
+  describe('syncGet', () => {
+    it('should synchronously retrieve a value from the cache', async () => {
+      const key = 'test-key';
+      const mockValue = 'test-value';
+      jest.spyOn(cacheManager, 'get').mockResolvedValue(mockValue);
+
+      const result = await redisService.syncGet(key);
+
+      expect(cacheManager.get).toHaveBeenCalledWith(key);
+      expect(result).toBe(mockValue);
+    });
   });
 
-  describe('sync get method test', () => {
-    it('should synchornously return the jwt for the given key', async () => {
-      const result = await service.syncGet(mockKey);
-      expect(cacheManager.get).toHaveBeenCalledWith(mockKey);
-      expect(result).toEqual('some-users-jwt');
-    })
-  });
+  describe('set', () => {
+    it('should set a value in the cache', async () => {
+      const key = 'test-key';
+      const value = 'test-value';
+      jest.spyOn(cacheManager, 'set').mockResolvedValue(null);
 
-  describe('set method test', () => {
-    it('should set the cache key with the new value', async () => {
-      const mockJwt = 'mock-jwt-string';
-      await service.set(mockKey, mockJwt)
-      expect(cacheManager.set).toHaveBeenCalledWith(mockKey, mockJwt, null)
-    })
+      const result = await redisService.set(key, value);
+
+      expect(cacheManager.set).toHaveBeenCalledWith(key, value, null);
+      expect(result).toBeNull(); // Assuming set resolves to null
+    });
   });
 });
