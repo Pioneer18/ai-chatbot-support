@@ -55,6 +55,14 @@ spec:
               value: "localhost"
             - name: REDIS_PORT
               value: "8000"
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "300m"
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+
           readinessProbe:
             periodSeconds: 5
             exec:
@@ -80,8 +88,8 @@ spec:
               readOnly: true
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "500m"
+              memory: "128Mi"
+              cpu: "250m"
         - image: redis:latest
           name: redis
           ports:
@@ -91,7 +99,7 @@ spec:
               value: "8000"
           resources:
             requests:
-              memory: "128Mi"
+              memory: "64Mi"
               cpu: "250m"
       volumes:
         - name: cloudsql-sa-credentials
