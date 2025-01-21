@@ -57,10 +57,10 @@ spec:
               value: "8000"
           resources:
             requests:
-              memory: "256Mi"
-              cpu: "300m"
+              memory: "128Mi"
+              cpu: "200m"
             limits:
-              memory: "512Mi"
+              memory: "256Mi"
               cpu: "1"
 
           readinessProbe:
@@ -88,8 +88,11 @@ spec:
               readOnly: true
           resources:
             requests:
+              memory: "64Mi"
+              cpu: "200m"
+            limits:
               memory: "128Mi"
-              cpu: "250m"
+              cpu: "1"
         - image: redis:latest
           name: redis
           ports:
@@ -100,7 +103,10 @@ spec:
           resources:
             requests:
               memory: "64Mi"
-              cpu: "250m"
+              cpu: "200m"
+            limits:
+              memory: "128Mi"
+              cpu: "1"
       volumes:
         - name: cloudsql-sa-credentials
           secret:
