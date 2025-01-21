@@ -5,6 +5,7 @@ import { LocalAuthGuard } from '../guards/local-auth.guard';
 import { Response, Request } from 'express';
 import { JwtAuthGuard } from '../guards/jwt.auth-guard';
 import { ResetPasswordDTO } from '../dto/reset-password.dto';
+import { ChangePasswordDto } from '../dto/change-password.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -57,4 +58,13 @@ export class AuthController {
   }
 
   // Role endpoints?
+  @Post('change-password')
+  async changePassword(@Body() payload: ChangePasswordDto, @Res() res: Response) {
+    try {
+      console.log('hello');
+      console.log(payload.confirmPassword, payload.newPassword, payload.originalPassword); 
+    } catch (err) {
+      throw err; // let the exception filter handle it? or whatever module it is that handles that
+    }
+  }
 }

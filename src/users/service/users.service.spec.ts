@@ -20,8 +20,10 @@ describe('UsersService', () => {
     find: jest.fn(),
     findOneBy: jest.fn(),
     findOneByEmail: jest.fn(),
+    findBy: jest.fn(),
     delete: jest.fn(),
     create: jest.fn(),
+    save: jest.fn(),
     update: jest.fn(),
   };
 
@@ -53,19 +55,73 @@ describe('UsersService', () => {
   describe('createUser', () => {
     it('should create a new user and return it', async () => {
       const createUserDto: CreateUserDto = {
-        firstName: 'Solid',
-        lastName: 'Snake',
-        phoneNumber: '123456789',
-        email: 'solid.snake@gmail.com',
-        password: 'bigboss',
+        firstName: 'Revolver',
+        lastName: 'Ocelot',
+        phoneNumber: '0987654321',
+        email: 'revolver.ocelot@gmail.com',
+        password: '$2b$10$8wQbhNBfckfBsHeFRvY28.IEx4z6b024pnjYJDCca9D5K8QvEAEt.',
       };
-      const mockUser: UserInterface = MockUser;
-      mockRepository.create.mockResolvedValue(mockUser);
+      const mockUser: UserInterface = {
+        id: '06fdc28e-7873-4bea-8153-6c37d5e012da',
+        firstName: 'Revolver',
+        lastName: 'Ocelot',
+        phoneNumber: '0987654321',
+        email: 'revolver.ocelot@gmail.com',
+        password: '$2b$10$8wQbhNBfckfBsHeFRvY28.IEx4z6b024pnjYJDCca9D5K8QvEAEt.',
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
+        role: 'patient',
+        profilePic: '',
+        isActive: true
+      }
+      
+      jest.spyOn(repository, 'findBy').mockResolvedValue([]);
+      jest.spyOn(repository, 'create');
+      jest.spyOn(repository, 'save').mockResolvedValue({
+        id: mockUser.id,
+        firstName: 'Revolver',
+        lastName: 'Ocelot',
+        phoneNumber: '0987654321',
+        email: 'revolver.ocelot@gmail.com',
+        password: '$2b$10$8wQbhNBfckfBsHeFRvY28.IEx4z6b024pnjYJDCca9D5K8QvEAEt.',
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
+        role: 'patient',
+        profilePic: '',
+        isActive: true
+      })
 
       const result = await service.createUser(createUserDto);
-      expect(result).toEqual(mockUser);
-      expect(mockRepository.create).toHaveBeenCalledWith(createUserDto);
-    })
+      mockUser.id = result.id;
+      expect(mockUser).toEqual(result);
+      
+    });
+
+    it('should throw an error if user email already in the database', async () => {
+      const createUserDto: CreateUserDto = {
+        firstName: 'Johnny',
+        lastName: 'Bravo',
+        phoneNumber: '123456789',
+        email: 'johnny.bravo@cartoonnetwork.com',
+        password: '$2b$10$8wQbhNBfckfBsHeFRvY28.IEx4z6b024pnjYJDCca9D5K8QvEAEt.',
+      };
+
+      jest.spyOn(repository, 'findBy').mockResolvedValue([{
+        id: '06fdc28e-7873-4bea-8153-6c37d5e012da',
+        firstName: 'Johnny',
+        lastName: 'Bravo',
+        phoneNumber: '1234567890',
+        email: 'johnny.bravo@cartoonnetwork.com',
+        password: '$2b$10$8wQbhNBfckfBsHeFRvY28.IEx4z6b024pnjYJDCca9D5K8QvEAEt.',
+        resetPasswordToken: null,
+        resetPasswordExpires: null,
+        role: 'patient',
+        profilePic: '',
+        isActive: true
+      }])
+
+      await expect(service.createUser(createUserDto)).rejects.toThrow('Error: user account already exists for johnny.bravo@cartoonnetwork.com')
+    });
   });
 
   describe('updateUser', () => {

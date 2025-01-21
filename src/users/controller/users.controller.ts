@@ -1,15 +1,20 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UsePipes } from '@nestjs/common';
 import { UsersService } from '../service/users.service';
 import { CreateUserDto } from '../dto/create-user.dto';
 import { UpdateUserDto } from '../dto/update-user.dto';
 import { FindByEmailDto } from '../dto/find-user.dto';
 import { RemoveUserDto } from '../dto/remove-user.dto';
+import { BcryptHashPipe } from '../pipes/bcrypt.pipe';
+import { JoiValidationPipe } from '../../common/pipes/joi-validation.pipe';
+import { CreateUserValidation } from '../schema/create-user-validation.schema';
 
 @Controller('users')
 export class UsersController {
     constructor(private readonly usersService: UsersService) {}
 
-    @Post()
+    @UsePipes(new BcryptHashPipe())
+    @UsePipes(new JoiValidationPipe(CreateUserValidation))
+    @Post('signup')
     async create(@Body() createUserDto: CreateUserDto) {
         return this.usersService.createUser(createUserDto);
     }

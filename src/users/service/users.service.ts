@@ -8,6 +8,7 @@ import { UpdateUserInterace } from '../interface/service/update-user.interface';
 import { RemoveUserInterface } from '../interface/service/remove-user.interface';
 import { CommonErrors } from '../../common/errors/errors';
 import { UserInterface } from '../interface/user.interface';
+import { v4 as uuidv4 } from 'uuid'; 
 
 @Injectable()
 export class UsersService {
@@ -16,9 +17,27 @@ export class UsersService {
     private usersRepository: Repository<User>
   ) {}
 
-  createUser = async (userData: CreateUserDto): Promise<UserInterface> => {
+  createUser = async (userInput: CreateUserDto): Promise<UserInterface> => {
     try {
-      const user = await this.usersRepository.create(userData);
+      const userData: UserInterface = {
+        ...userInput,
+        resetPasswordExpires: null,
+        resetPasswordToken: null,
+        role: 'patient', // this should be a given value; e.g. physician, admin
+        profilePic: '',
+        isActive: true,
+        id: uuidv4(),
+      }
+  
+      const duplicate = await this.usersRepository.findBy({email: userData.email});
+      if (duplicate[0]) {
+        throw new Error('user account already exists for ' + userData.email);
+      }
+
+      await this.usersRepository.create(userData);
+      const user = await this.usersRepository.save(userData);
+      console.log(`user: ${JSON.stringify(user)}`)
+
       return user;
     } catch (err) {
       throw new Error(err);
