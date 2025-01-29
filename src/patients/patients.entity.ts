@@ -1,4 +1,4 @@
-import { User } from '../users/user.entity';
+import { User } from '../users/interface/enity/user.entity';
 import { AuditableEntity } from '../utilities/entities/auditable-entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
 

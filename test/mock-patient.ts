@@ -1,4 +1,4 @@
-import { Patient } from "src/patients/patients.entity";
+import { Patient } from "../src/patients/patients.entity";
 import { MockUser } from "./mock-user";
 import { MockAudit } from "./mock-audit";
 

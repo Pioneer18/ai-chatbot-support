@@ -3,7 +3,6 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ChatModule } from './chat/chat.module';
 import { ConfigModule } from '@nestjs/config';
-import { AiService } from './ai/ai.service';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
@@ -12,6 +11,18 @@ import { PhysiciansModule } from './physicians/physicians.module';
 import { SymptomConditionMappingModule } from './symptom-condition-mapping/symptom-condition-mapping.module';
 import { AppointmentsModule } from './appointments/appointments.module';
 import { PrescriptionModule } from './prescription/prescription.module';
+import { ChatController } from './chat/chat/chat.controller';
+import { AuthController } from './auth/controller/auth.controller';
+import { PatientsController } from './patients/patients.controller';
+import { PhysiciansController } from './physicians/physicians.controller';
+import { PrescriptionController } from './prescription/prescription.controller';
+import { SymptomConditionMappingController } from './symptom-condition-mapping/symptom-condition-mapping.controller';
+import { UsersController } from './users/controller/users.controller';
+import { RedisModule } from './redis/redis.module';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { HttpErrorFilter } from './common/filters/http-error.filter';
+import { LoggingInterceptor } from './common/interceptors/logging-interceptor';
+import { ErrorFilter } from './common/filters/error.filters';
 
 @Module({
   imports: [
@@ -35,8 +46,24 @@ import { PrescriptionModule } from './prescription/prescription.module';
     PhysiciansModule,
     SymptomConditionMappingModule,
     AppointmentsModule,
-    PrescriptionModule],
-  controllers: [AppController],
-  providers: [AppService, AiService],
+    PrescriptionModule,
+    RedisModule
+  ],
+  controllers: [
+    AppController,
+    AuthController,
+    ChatController,
+    PatientsController,
+    PhysiciansController,
+    PrescriptionController,
+    SymptomConditionMappingController,
+    UsersController
+  ],
+  providers: [
+    AppService,
+    { provide: APP_FILTER, useClass: HttpErrorFilter},
+    { provide: APP_INTERCEPTOR, useClass: LoggingInterceptor },
+    { provide: APP_FILTER, useClass: ErrorFilter },
+  ],
 })
 export class AppModule {}
