@@ -59,7 +59,9 @@ export class AuthService {
       if (!key || !jwt) {
         throw new Error
       }
+      console.log('Setting Redis Dead-List with: ' + key + ' and ' + jwt);
       await this.redisService.set(key, jwt);
+      console.log('JWT: ' + jwt + ' is now on the Dead-List, LoggedOutGuard will block this JWT even if it is not expired!');
       return key;
     } catch (err) {
       throw new Error(err)

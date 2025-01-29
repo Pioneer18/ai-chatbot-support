@@ -52,9 +52,9 @@ spec:
                   name: db-credentials
                   key: DB_PORT
             - name: REDIS_HOST
-              value: "localhost"
+              value: "redis"
             - name: REDIS_PORT
-              value: "8000"
+              value: "6379"
           resources:
             requests:
               memory: "64Mi"
@@ -96,10 +96,10 @@ spec:
         - image: redis:latest
           name: redis
           ports:
-            - containerPort: 8000
+            - containerPort: 6379
           env:
             - name: REDIS_PORT
-              value: "8000"
+              value: "6379"
           resources:
             requests:
               memory: "64Mi"

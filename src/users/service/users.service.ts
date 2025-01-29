@@ -101,4 +101,8 @@ export class UsersService {
       throw new Error(err);
     }
   }
+
+  // private
+  // createUserUpdate
+  // logoutUser and don't return anything
 }
