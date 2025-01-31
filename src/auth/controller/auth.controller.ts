@@ -37,7 +37,7 @@ export class AuthController {
    */
   // @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@Req() req: Request, @Res({passthrough: true}) res: Response): Promise<{message: string}> {
+  async logout(@Req() req: Request, @Res() res: Response): Promise<{message: string}> {
     try {
       const key = await this.authService.logout(req)
       res.clearCookie(key, { path: '/' });
@@ -48,7 +48,7 @@ export class AuthController {
   }
 
   @Post('reset-password')
-  async resetPassword(@Body() payload: ResetPasswordDTO, @Res({passthrough: true}) res: Response) {
+  async resetPassword(@Body() payload: ResetPasswordDTO, @Res() res: Response) {
     try {
       await this.authService.resetPassword(payload);
       res.redirect('/login')
