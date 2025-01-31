@@ -58,9 +58,11 @@ export class AuthController {
   }
 
   // Role endpoints?
+  @UseGuards(JwtAuthGuard)
   @Post('change-password')
-  async changePassword(@Body() payload: ChangePasswordDto, @Res() res: Response) {
+  async changePassword(@Req() req, @Body() payload: ChangePasswordDto, @Res() res: Response) {
     try {
+      console.log(req.user);
       console.log('hello');
       console.log(payload.confirmPassword, payload.newPassword, payload.originalPassword); 
     } catch (err) {

@@ -15,6 +15,7 @@ import { RedisService } from '../../redis/service/redis.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { ResetPasswordInterface } from '../interface/service/reset-password.interface';
 import * as bcrypt from 'bcrypt';
+import { ChangePasswordInterface } from '../interface/service/change-password.interface';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -121,7 +122,15 @@ describe('AuthService', () => {
   });
 
   describe('changePassword', () => {
-
+    it('should update the user`s password in the DB with the new password value', async () => {
+      const payload: ChangePasswordInterface = {
+        originalPassword: "password",
+        newPassword: "ghost",
+        confirmPassword: "ghost"
+      }
+      // verify the newPassword different? and same as confirm
+      
+    })
   });
 
   describe('forgotPassword', () => {
