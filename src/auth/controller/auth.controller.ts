@@ -65,6 +65,7 @@ export class AuthController {
       console.log(req.user);
       console.log('hello');
       console.log(payload.confirmPassword, payload.newPassword, payload.originalPassword); 
+      return {message: "attempting to change password!"}
     } catch (err) {
       throw err; // let the exception filter handle it? or whatever module it is that handles that
     }
