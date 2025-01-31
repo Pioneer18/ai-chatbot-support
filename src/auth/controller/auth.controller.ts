@@ -62,10 +62,11 @@ export class AuthController {
   @Post('change-password')
   async changePassword(@Req() req, @Body() payload: ChangePasswordDto, @Res() res: Response) {
     try {
-      console.log(req.user);
+      const user: any = req.user;
+      console.log(`This should be the req.user ${user}`);
       console.log('hello');
       console.log(payload.confirmPassword, payload.newPassword, payload.originalPassword); 
-      return {message: "attempting to change password!"}
+      return res.send("HELLO!?")
     } catch (err) {
       throw err; // let the exception filter handle it? or whatever module it is that handles that
     }
