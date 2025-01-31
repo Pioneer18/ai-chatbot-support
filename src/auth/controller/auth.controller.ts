@@ -35,7 +35,7 @@ export class AuthController {
    * session prior to the JWT expiration time
    * @param req The request containing the user's JWT payload to be added to the logged-out 'dead-list' in the Redis cache
    */
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post('logout')
   async logout(@Req() req: Request, @Res({passthrough: true}) res: Response): Promise<{message: string}> {
     try {

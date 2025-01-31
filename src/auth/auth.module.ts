@@ -28,13 +28,11 @@ import { LocalStrategy } from './strategies/local.strategy';
       }),
     }),
     CacheModule.registerAsync({
-      // imports: [],
-      // inject: [],
       useFactory: async () => ({
         store: 'redis',
         host: 'localhost',
         port: 1234,
-        ttl: 6000, // 1 hour
+        ttl: 6000,
       }),
     }),
     TypeOrmModule.forFeature([Permission]),
