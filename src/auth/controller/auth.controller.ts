@@ -60,13 +60,13 @@ export class AuthController {
   // Role endpoints?
   @UseGuards(JwtAuthGuard)
   @Post('change-password')
-  async changePassword(@Req() req, @Body() payload: ChangePasswordDto, @Res() res: Response) {
+  async changePassword(@Req() req, @Body() payload: ChangePasswordDto) {
     try {
       const user: any = req.user;
-      console.log(`This should be the req.user ${user}`);
+      console.log(`This should be the req.user ${JSON.stringify(user)}`);
       console.log('hello');
       console.log(payload.confirmPassword, payload.newPassword, payload.originalPassword); 
-      return res.send("HELLO!?")
+      return {message: 'change-password return'}
     } catch (err) {
       throw err; // let the exception filter handle it? or whatever module it is that handles that
     }
