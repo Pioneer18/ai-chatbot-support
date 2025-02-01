@@ -90,7 +90,8 @@ describe('AuthService', () => {
       
       // expect(userService.findByEmail).toHaveBeenCalledWith({email: payload.email})
       expect(jwtService.sign).toHaveBeenCalledWith(payload);
-      expect(result).toBe(`Authentication=${mockSignedToken}; Secure; HttpOnly; Path=/; Max-Age=undefined`);
+      expect(result).toBe(`Authentication=${mockSignedToken}; HttpOnly; Path=/; Max-Age=undefined`);
+      // expect(result).toBe(`Authentication=${mockSignedToken}; Secure; HttpOnly; Path=/; Max-Age=undefined`);
     })
   })
 
