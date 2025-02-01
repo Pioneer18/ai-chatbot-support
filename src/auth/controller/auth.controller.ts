@@ -62,8 +62,7 @@ export class AuthController {
   @Post('change-password')
   async changePassword(@Req() req, @Body() payload: ChangePasswordDto) {
     try {
-      const user: any = req.user;
-      console.log(`This should be the req.user ${JSON.stringify(user)}`);
+      console.log(`This should be the req.user ${JSON.stringify(req)}`);
       console.log('hello');
       console.log(payload.confirmPassword, payload.newPassword, payload.originalPassword); 
       return {message: 'change-password return'}
