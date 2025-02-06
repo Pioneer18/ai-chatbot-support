@@ -4,7 +4,7 @@ import {
     BadRequestException,
     Logger,
   } from '@nestjs/common';
-  import { Schema } from '@hapi/joi';
+  import { Schema } from 'joi';
   
   /**
    * **summary**: This class accepts a joi validationSchema when instantiated. It will validate an incoming value against the provided validation schema

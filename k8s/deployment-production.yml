@@ -31,21 +31,21 @@ spec:
                 secretKeyRef:
                   name: jwt-secret
                   key: jwt_secret
-            - name: DB_USERNAME
+            - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
                   name: db-credentials
-                  key: DB_USERNAME
-            - name: DB_PASSWORD
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: db-credentials
-                  key: DB_PASSWORD
-            - name: DB
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
                   name: db-credentials
-                  key: DB
+                  key: POSTGRES_DB
             - name: DB_PORT
               valueFrom:
                 secretKeyRef:

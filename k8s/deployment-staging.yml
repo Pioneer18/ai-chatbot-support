@@ -17,40 +17,22 @@ spec:
         app: chatbot-support
     spec:
       containers:
-        - image: gcr.io/ai-chatbot-support-444616/chatbot-support:v1
+        - image: pioneer18/ai-chatbot-support:v1
           imagePullPolicy: Always
           name: chatbot-support
           env:
             - name: OPENAI_API_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: openai-api-key
-                  key: OPENAI_API_KEY
+              value: OPENAI_API_KEY
             - name: JWT_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: jwt-secret
-                  key: jwt_secret
-            - name: DB_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: DB_USERNAME
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: DB_PASSWORD
-            - name: DB
-              valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: DB
+              value: JWT_SECRET
+            - name: POSTGRES_USER
+              value: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              value: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: POSTGRES_DB
             - name: DB_PORT
-              valueFrom:
-                secretKeyRef:
-                  name: db-credentials
-                  key: DB_PORT
+              value: DB_PORT
             - name: REDIS_HOST
               value: "redis"
             - name: REDIS_PORT
@@ -62,37 +44,30 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "300m"
-
-          readinessProbe:
-            periodSeconds: 5
-            exec:
-              command:
-                - sh
-                - -c
-                - "mkdir -p /tmp && touch /tmp/healthy && cat /tmp/healthy"
+          # readinessProbe:
+          #   periodSeconds: 5
+          #   exec:
+          #     command:
+          #       - sh
+          #       - -c
+          #       - "mkdir -p /tmp && touch /tmp/healthy && cat /tmp/healthy"
           ports:
             - containerPort: 3000
-        - image: gcr.io/cloud-sql-connectors/cloud-sql-proxy:2.14.1
+        - image: postgres:latest
+          name: postgres
           imagePullPolicy: Always
-          name: cloud-sql-proxy
-          args:
-            - "--structured-logs"
-            - "--port=1234"
-            - "ai-chatbot-support-444616:us-central1:ai-chatbot-database"
-            - "--credentials-file=/secrets/cloudsql/cloud-sql-service-account-credentials.json"
-          securityContext:
-            runAsNonRoot: true
+          env:
+            - name: POSTGRES_USER
+              value: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              value: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: POSTGRES_DB
+          ports:
+            - containerPort: 5432
           volumeMounts:
-            - name: cloudsql-sa-credentials
-              mountPath: /secrets/cloudsql/
-              readOnly: true
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "200m"
-            limits:
-              memory: "128Mi"
-              cpu: "300m"
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
         - image: redis:latest
           name: redis
           ports:
@@ -107,7 +82,8 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "300m"
+
       volumes:
-        - name: cloudsql-sa-credentials
-          secret:
-            secretName: cloudsql-credentials
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
