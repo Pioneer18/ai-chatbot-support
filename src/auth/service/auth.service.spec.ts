@@ -14,7 +14,8 @@ import { ExtractKeyJwtUtil } from '../util/extract-key-jwt.util';
 import { RedisService } from '../../redis/service/redis.service';
 import { CACHE_MANAGER } from '@nestjs/cache-manager';
 import { ResetPasswordInterface } from '../interface/service/reset-password.interface';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
+import { ChangePasswordInterface } from '../interface/service/change-password.interface';
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -89,7 +90,8 @@ describe('AuthService', () => {
       
       // expect(userService.findByEmail).toHaveBeenCalledWith({email: payload.email})
       expect(jwtService.sign).toHaveBeenCalledWith(payload);
-      expect(result).toBe(`Authentication=${mockSignedToken}; Secure; HttpOnly; Path=/; Max-Age=undefined`);
+      expect(result).toBe(`Authentication=${mockSignedToken}; HttpOnly; Path=/; Max-Age=undefined`);
+      // expect(result).toBe(`Authentication=${mockSignedToken}; Secure; HttpOnly; Path=/; Max-Age=undefined`);
     })
   })
 
@@ -121,7 +123,15 @@ describe('AuthService', () => {
   });
 
   describe('changePassword', () => {
-
+    it('should update the user`s password in the POSTGRES_DB with the new password value', async () => {
+      const payload: ChangePasswordInterface = {
+        originalPassword: "password",
+        newPassword: "ghost",
+        confirmPassword: "ghost"
+      }
+      // verify the newPassword different? and same as confirm
+      
+    })
   });
 
   describe('forgotPassword', () => {

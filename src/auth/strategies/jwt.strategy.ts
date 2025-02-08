@@ -13,6 +13,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     super({
       // read JWT from the Cookie Header
       jwtFromRequest: ExtractJwt.fromExtractors([(request: Request) => {
+        console.log("JWT STRATEGY HERE")
+        console.log(request?.cookies?.Authentication);
         return request?.cookies?.Authentication;
       }]),
       ignoreExpiration: false,
@@ -25,6 +27,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * @param payload
    */
   validate = async (payload: any): Promise<JwtPayloadInterface> => {
+    console.log(`JwtStrategy Payload: ${JSON.stringify(payload)}`);
     return { userid: payload.id, firstName: payload.firstName, lastName: payload.lastName, email: payload.email };
   }
 }

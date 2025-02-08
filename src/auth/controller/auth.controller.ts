@@ -35,9 +35,9 @@ export class AuthController {
    * session prior to the JWT expiration time
    * @param req The request containing the user's JWT payload to be added to the logged-out 'dead-list' in the Redis cache
    */
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@Req() req: Request, @Res({passthrough: true}) res: Response): Promise<{message: string}> {
+  async logout(@Req() req: Request, @Res() res: Response): Promise<{message: string}> {
     try {
       const key = await this.authService.logout(req)
       res.clearCookie(key, { path: '/' });
@@ -48,7 +48,7 @@ export class AuthController {
   }
 
   @Post('reset-password')
-  async resetPassword(@Body() payload: ResetPasswordDTO, @Res({passthrough: true}) res: Response) {
+  async resetPassword(@Body() payload: ResetPasswordDTO, @Res() res: Response) {
     try {
       await this.authService.resetPassword(payload);
       res.redirect('/login')
@@ -58,11 +58,14 @@ export class AuthController {
   }
 
   // Role endpoints?
+  @UseGuards(JwtAuthGuard)
   @Post('change-password')
-  async changePassword(@Body() payload: ChangePasswordDto, @Res() res: Response) {
+  async changePassword(@Req() req, @Body() payload: ChangePasswordDto) {
     try {
+      console.log(`This should be the req.user ${JSON.stringify(req)}`);
       console.log('hello');
       console.log(payload.confirmPassword, payload.newPassword, payload.originalPassword); 
+      return {message: 'change-password return'}
     } catch (err) {
       throw err; // let the exception filter handle it? or whatever module it is that handles that
     }

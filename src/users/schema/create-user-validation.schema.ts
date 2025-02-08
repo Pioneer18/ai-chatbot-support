@@ -1,4 +1,4 @@
-import * as joi from '@hapi/joi';
+import * as joi from 'joi';
 /**
  * **summary**: validate the requested new User data confirms to the User model
  */

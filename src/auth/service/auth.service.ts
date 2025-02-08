@@ -1,6 +1,6 @@
 // src/auth/auth.service.ts
 import { Injectable } from '@nestjs/common';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Role } from '../rbac/role.entity';
@@ -47,7 +47,7 @@ export class AuthService {
   login = async (loginDto: LoginInterface): Promise<string> => {
     try {
       const token = await this.jwtService.sign(loginDto);
-      return `Authentication=${token}; Secure; HttpOnly; Path=/; Max-Age=${process.env.JWT_EXPIRATION_TIME}`;
+      return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${process.env.JWT_EXPIRATION_TIME}`;
     } catch (err) {
       throw err;
     }

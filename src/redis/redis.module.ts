@@ -8,7 +8,7 @@ import { RedisService } from './service/redis.service';
     CacheModule.registerAsync({
       useFactory: async () => ({
         store: redisStore,
-        host: 'localhost',
+        host: 'redis',
         port: 6379,
         ttl: 6000, // 1 hour
       }),
