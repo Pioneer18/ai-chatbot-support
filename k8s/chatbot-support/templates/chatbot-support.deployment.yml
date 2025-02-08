@@ -17,7 +17,7 @@ spec:
         app: chatbot-support
     spec:
       containers:
-        - image: pioneer18/ai-chatbot-support:v1
+        - image: "{{ .Values.chatbotSupportImage }}"
           imagePullPolicy: Always
           name: chatbot-support
           env:
