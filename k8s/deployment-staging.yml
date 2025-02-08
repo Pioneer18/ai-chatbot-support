@@ -37,6 +37,12 @@ spec:
               value: "redis"
             - name: REDIS_PORT
               value: "6379"
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 5
           resources:
             requests:
               memory: "64Mi"
@@ -44,11 +50,5 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "300m"
-            readinessProbe:
-              httpGet:
-                path: /healthz
-                port: 3000
-              initialDelaySeconds: 5
-              periodSeconds: 5
           ports:
             - containerPort: 3000
