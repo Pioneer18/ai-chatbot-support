@@ -38,7 +38,6 @@ import { ErrorFilter } from './common/filters/error.filters';
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB,
       autoLoadEntities: true,
-      synchronize: true
     }),
     ChatModule,
     AuthModule,

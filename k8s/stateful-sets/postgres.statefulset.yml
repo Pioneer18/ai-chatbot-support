@@ -13,6 +13,15 @@ spec:
       labels:
         app: postgres
     spec:
+      initContainers:
+        - name: init-db
+          image: postgres:latest
+          command: 
+            - "sh"
+            - "-c"
+            - |
+              until pg_isready -h postgres;do sleep 2; done && 
+              psql -h postgres -U ${process.env.POSTGRES_USER} -d ${process.env.POSTGRES_DB} -f /init-sql/init.sql
       containers:
         - name: postgres
           image: postgres:latest
@@ -28,6 +37,10 @@ spec:
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: init-sql
+          configMap:
+            name: postgres-init-sql  
   volumeClaimTemplates:
     - metadata:
         name: postgres-storage
