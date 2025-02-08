@@ -13,20 +13,6 @@ spec:
       labels:
         app: postgres
     spec:
-      initContainers:
-        - name: init-db
-          image: postgres:latest
-          command: 
-            - "sh"
-            - "-c"
-            - |
-                apt-get update && \
-                apt-get install -y postgresql-client && \
-                until pg_isready -h postgres; do sleep 2; done && \
-                psql -h postgres -U ${DB_USER} -d ${DB_NAME} -f /init-sql/init.sql
-          volumeMounts:
-            - name: init-sql
-              mountPath: /init-sql
       containers:
         - name: postgres
           image: postgres:latest

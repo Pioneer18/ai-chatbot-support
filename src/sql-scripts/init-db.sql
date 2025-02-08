@@ -1,10 +1,4 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: postgres-init-sql
-data:
-  init.sql: |
-    CREATE TABLE IF NOT EXISTS users (
+CREATE TABLE IF NOT EXISTS users (
         id UUID PRIMARY KEY,
         first_name TEXT NOT NULL,
         last_name TEXT NOT NULL,
