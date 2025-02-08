@@ -20,8 +20,9 @@ spec:
             - "sh"
             - "-c"
             - |
-              until pg_isready -h postgres;do sleep 2; done && 
-              psql -h postgres -U ${process.env.POSTGRES_USER} -d ${process.env.POSTGRES_DB} -f /init-sql/init.sql
+              apk add --no-cache postgresql-client && \
+        until pg_isready -h postgres; do sleep 2; done && \
+        psql -h postgres -U ${DB_USER} -d ${DB_NAME} -f /init-sql/init.sql
       containers:
         - name: postgres
           image: postgres:latest
