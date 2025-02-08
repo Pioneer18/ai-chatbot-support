@@ -32,7 +32,7 @@ import { ErrorFilter } from './common/filters/error.filters';
     }),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
+      host: 'postgres',
       port: Number(process.env.DB_PORT),
       username: process.env.POSTGRES_USER,
       password: process.env.POSTGRES_PASSWORD,
@@ -48,7 +48,7 @@ import { ErrorFilter } from './common/filters/error.filters';
     SymptomConditionMappingModule,
     AppointmentsModule,
     PrescriptionModule,
-    RedisModule
+    RedisModule,
   ],
   controllers: [
     AppController,

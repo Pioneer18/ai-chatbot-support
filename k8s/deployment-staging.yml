@@ -6,7 +6,7 @@ metadata:
     app: chatbot-support
     env: staging
 spec:
-  replicas: 2
+  replicas: 1
   revisionHistoryLimit: 0
   selector:
     matchLabels:
@@ -44,46 +44,11 @@ spec:
             limits:
               memory: "128Mi"
               cpu: "300m"
-          # readinessProbe:
-          #   periodSeconds: 5
-          #   exec:
-          #     command:
-          #       - sh
-          #       - -c
-          #       - "mkdir -p /tmp && touch /tmp/healthy && cat /tmp/healthy"
+            readinessProbe:
+              httpGet:
+                path: /healthz
+                port: 3000
+              initialDelaySeconds: 5
+              periodSeconds: 5
           ports:
             - containerPort: 3000
-        - image: postgres:latest
-          name: postgres
-          imagePullPolicy: Always
-          env:
-            - name: POSTGRES_USER
-              value: POSTGRES_USER
-            - name: POSTGRES_PASSWORD
-              value: POSTGRES_PASSWORD
-            - name: POSTGRES_DB
-              value: POSTGRES_DB
-          ports:
-            - containerPort: 5432
-          volumeMounts:
-            - mountPath: /var/lib/postgresql/data
-              name: postgres-storage
-        - image: redis:latest
-          name: redis
-          ports:
-            - containerPort: 6379
-          env:
-            - name: REDIS_PORT
-              value: "6379"
-          resources:
-            requests:
-              memory: "64Mi"
-              cpu: "200m"
-            limits:
-              memory: "128Mi"
-              cpu: "300m"
-
-      volumes:
-        - name: postgres-storage
-          persistentVolumeClaim:
-            claimName: postgres-pvc
