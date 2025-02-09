@@ -28,6 +28,10 @@ spec:
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: init-sql
+          configMap:
+            name: postgres-init-sql  
   volumeClaimTemplates:
     - metadata:
         name: postgres-storage

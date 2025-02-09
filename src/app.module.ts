@@ -23,6 +23,8 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpErrorFilter } from './common/filters/http-error.filter';
 import { LoggingInterceptor } from './common/interceptors/logging-interceptor';
 import { ErrorFilter } from './common/filters/error.filters';
+import { DatabaseService } from './database/database.service';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
@@ -30,16 +32,7 @@ import { ErrorFilter } from './common/filters/error.filters';
       isGlobal: true,
       envFilePath: '.env'
     }),
-    TypeOrmModule.forRoot({
-      type: 'postgres',
-      host: 'postgres',
-      port: Number(process.env.DB_PORT),
-      username: process.env.POSTGRES_USER,
-      password: process.env.POSTGRES_PASSWORD,
-      database: process.env.POSTGRES_DB,
-      autoLoadEntities: true,
-      synchronize: true
-    }),
+    DatabaseModule,
     ChatModule,
     AuthModule,
     UsersModule,
