@@ -23,7 +23,6 @@ import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { HttpErrorFilter } from './common/filters/http-error.filter';
 import { LoggingInterceptor } from './common/interceptors/logging-interceptor';
 import { ErrorFilter } from './common/filters/error.filters';
-import { DatabaseService } from './database/database.service';
 import { DatabaseModule } from './database/database.module';
 
 @Module({

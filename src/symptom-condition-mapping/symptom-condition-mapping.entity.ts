@@ -1,23 +1,24 @@
 import { Condition } from './condition.entity';
 import { Symptom } from './symptom.entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
+import { Entity, Column, OneToOne, JoinColumn, PrimaryColumn, ManyToOne} from 'typeorm';
 
 @Entity('symptom_condition_mapping')
 export class SymptomConditionMapping {
-    @PrimaryGeneratedColumn()
-    id: number
+    @PrimaryColumn({ name: 'symptom_id', type: 'int' })
+    symptomId: number;
 
-    @OneToOne(() => Symptom)
-    @JoinColumn()
-    symptom: Symptom
+    @PrimaryColumn({ name: 'condition_id', type: 'int' })
+    conditionId: number;
 
-    @OneToOne(() => Condition)
-    @JoinColumn()
-    condition: Condition
+    @ManyToOne(() => Symptom)
+    symptom: Symptom;
 
-    @Column('text', {nullable: true})
-    severityLevel: string
+    @ManyToOne(() => Condition)
+    condition: Condition;
 
-    @Column('text', {nullable: true})
-    recommended_action: string
+    @Column({ name: 'severity_level', type: 'text', nullable: true })
+    severityLevel?: string;
+
+    @Column({ name: 'recommended_action', type: 'text', nullable: true })
+    recommendedAction?: string;
 }

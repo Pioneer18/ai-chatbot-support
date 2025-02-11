@@ -1,9 +1,9 @@
-import {  Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import {  Column } from 'typeorm';
 
-export class AuditableEntity {
- @CreateDateColumn({ type: 'timestamp without time zone' })
-  created_at: Date;
+export abstract class AuditableEntity {
+  @Column({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp without time zone' })
-  updated_at: Date;
+  @Column({ name: 'updated_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  updatedAt: Date;
 }

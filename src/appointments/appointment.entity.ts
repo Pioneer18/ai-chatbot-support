@@ -1,27 +1,24 @@
 import { Patient } from "../patients/patients.entity";
 import { Physician } from "../physicians/physician.entity";
 import { AuditableEntity } from "../utilities/entities/auditable-entity";
-import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn, PrimaryGeneratedColumn, Timestamp } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Timestamp } from "typeorm";
 
 @Entity('appointments')
-export class Appointment {
-    @PrimaryGeneratedColumn()
+export class Appointment extends AuditableEntity {
+    @PrimaryGeneratedColumn('increment')
     id: number
 
-    @OneToOne(() => Patient)
-    @JoinColumn()
+    @ManyToOne(() => Patient)
+    @JoinColumn({name: 'patient_id'})
     patient: Patient
 
-    @OneToOne(() => Physician)
-    @JoinColumn()
+    @ManyToOne(() => Physician)
+    @JoinColumn({name: 'physician_id'})
     physician: Physician
 
-    @Column('timestamp without time zone')
-    scheduled_time: Date
+    @Column({name: 'scheduled_time', type: 'timestamp'})
+    scheduledTime: Date
 
     @Column('text')
     status: string
-
-    @Column(() => AuditableEntity)
-    audit: AuditableEntity
 }

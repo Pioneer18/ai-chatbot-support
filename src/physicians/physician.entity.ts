@@ -3,23 +3,20 @@ import { AuditableEntity } from '../utilities/entities/auditable-entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
 
 @Entity('physicians')
-export class Physician {
-    @PrimaryGeneratedColumn()
+export class Physician extends AuditableEntity {
+    @PrimaryGeneratedColumn('increment')
     id: number
 
     @OneToOne(() => User)
-    @JoinColumn()
+    @JoinColumn({name: 'user_id'})
     user: User
 
     @Column('text')
     specialization: string
 
     @Column('text', {nullable: true})
-    location: string
+    location?: string
 
     @Column("simple-array", {nullable: true})
-    availability: string[]
-
-    @Column(() => AuditableEntity)
-    audit: AuditableEntity
+    availability?: string[]
 }

@@ -9,5 +9,5 @@ export class Symptom {
     name: string
 
     @Column('text', {nullable: true})
-    description: string
+    description?: string
 }

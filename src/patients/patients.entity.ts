@@ -1,18 +1,18 @@
 import { User } from '../users/interface/enity/user.entity';
 import { AuditableEntity } from '../utilities/entities/auditable-entity';
-import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, Timestamp} from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn} from 'typeorm';
 
 @Entity('patients')
-export class Patient {
+export class Patient extends AuditableEntity {
     @PrimaryGeneratedColumn('increment')
     id: number
     
     @OneToOne(() => User)
-    @JoinColumn()
+    @JoinColumn({name: 'user_id'})
     user: User
     
-    @Column('text')
-    date_of_birth: string
+    @Column({name: 'date_of_birth', type: 'date'})
+    dateOfBirth: Date
     
     @Column('text')
     gender: string
@@ -21,14 +21,5 @@ export class Patient {
     height: string
 
     @Column({name: 'insurance_id', type: 'text', nullable: true})
-    insuranceId: string
-    
-    @Column(() => AuditableEntity)
-    audit: AuditableEntity
-    
-    @Column({ name: 'created_at', type: 'text' })
-    createdAt: Timestamp
-
-    @Column({ name: 'updated_at', type: 'text' })
-    updatedAt: Timestamp
+    insuranceId?: string
 }
