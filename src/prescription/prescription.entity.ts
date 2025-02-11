@@ -1,20 +1,20 @@
 import { Patient } from "../patients/patients.entity";
 import { Physician } from "../physicians/physician.entity";
 import { AuditableEntity } from "../utilities/entities/auditable-entity";
-import { Entity, JoinColumn, Column, PrimaryGeneratedColumn, OneToOne, Timestamp } from "typeorm";
+import { Entity, JoinColumn, Column, PrimaryGeneratedColumn, Timestamp, ManyToMany, ManyToOne } from "typeorm";
 
 @Entity('prescriptions')
-export class Prescriptions {
-    @PrimaryGeneratedColumn()
+export class Prescriptions extends AuditableEntity {
+    @PrimaryGeneratedColumn('increment')
     id: number
 
-    @OneToOne(() => Patient)
-    @JoinColumn()
-    patient: Patient
+    @ManyToOne(() => Patient)
+    @JoinColumn({name: 'patient_id'})
+    patientId: Patient
 
-    @OneToOne(() => Physician)
-    @JoinColumn()
-    physician: Physician
+    @ManyToOne(() => Physician)
+    @JoinColumn({name: 'physician_id'})
+    physicianId: Physician
 
     @Column('text') // should this be fk to medication table?
     medication: string
@@ -22,15 +22,12 @@ export class Prescriptions {
     @Column('text')
     dosage: string
 
-    @Column('timestamp without time zone')
-    start_date: Timestamp
+    @Column({name: 'start_date', type: 'timestamp'})
+    startDate: Date
 
-    @Column('timestamp without time zone')
-    end_date: Timestamp
+    @Column({name: 'end_date', type: 'timestamp'})
+    endDate: Date
 
-    @Column('text', {nullable: true})
-    remaining_refills: string
-
-    @Column(() => AuditableEntity)
-    audit: AuditableEntity
+    @Column({name: 'remaining_refills', type: 'int', nullable: true})
+    remainingRefills: number
 }

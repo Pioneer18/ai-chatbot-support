@@ -2,15 +2,15 @@ import { Entity, Column, PrimaryGeneratedColumn} from 'typeorm';
 
 @Entity('conditions')
 export class Condition {
-    @PrimaryGeneratedColumn()
+    @PrimaryGeneratedColumn('increment')
     id: number
 
-    @Column('text')
+    @Column({name: 'name', type: 'text'})
     name: string
 
-    @Column('text')
+    @Column({name: 'description', type: 'text'})
     description: string
 
-    @Column('text')
+    @Column({name: 'severity_level', type: 'text'})
     severityLevel: string
 }
